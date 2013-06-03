@@ -1,0 +1,12 @@
+<% scope ||= nil %>
+<dl>
+  <dt>
+    <label for="<%= "record_#{column.name}" %>">
+      <%= active_scaffold_config.columns[:line_paied].label %>
+    </label>
+  </dt>
+  <dd>
+    <%= form_column(active_scaffold_config.columns[:paied_amount], scope) %> 
+    <%= form_column(active_scaffold_config.columns[:paied_date], scope) %>
+  </dd>
+</dl>

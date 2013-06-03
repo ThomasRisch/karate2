@@ -1,0 +1,50 @@
+On Shuttle:
+- export into dumpfile (see cronjob)
+- export documents into a tar file. Trailing zeros must be removed because of a different directory structure
+ tar -cvf ../arch.tar --transform='s,..[0]*,./,' .
+=> regex strips leading zeros
+
+On Pangolin:
+- scp files over: datamigration/karate_prod.sql
+
+Export from MySQL into SQlite:
+
+Prepare MySQL database:
+mysql -u root -pfreebee test < reset_db.sql
+mysql -u root -pfreebee test < karate_prod.sql
+mysql -u root -pfreebee test < courses.sql
+mysql -u root -pfreebee test < change_db.sql
+
+Export correctly formed MySQL database:
+./mysql2sqlite.sh -u root -pfreebee --no-create-db --no-create-info --complete-insert --default-character-set=utf8 test > interim.step
+
+Import into SQLite test database:
+rake db:test:load
+sqlite3 test.sqlite3 < ../../mysql/interim.step
+
+mport into SQLite dev database
+rake db:reset
+sqlite3 ../db/development.sqlite3 < interim.step
+
+Empty dev database:
+http://stackoverflow.com/questions/4116067/purge-or-recreate-a-ruby-on-rails-database
+rake db:reset
+(rake db:migrate)
+
+Rebuild database:
+remove schema.rb
+run rake db:reset
+run rake db:migrate
+run rake db:seed
+
+Move documents
+prepare documents.tar.gz on /var/rails/karate/public/doc/filename/00000/
+tar -cvzf ../documents.tar.gz --transform='s,..[0]*,./,' .
+extract it into karate2/public/uploads/documents
+
+Backup application:
+tar -cvzf karate2_10.tar.gz --exclude=./karate2/public/uploads/* --exclude=./karate2/tmp/* --exclude=./karate2/log/* ./karate2
+Backup documents:
+???
+
+

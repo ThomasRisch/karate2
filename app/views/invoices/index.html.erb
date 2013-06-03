@@ -1,0 +1,28 @@
+<h2 style="font: bold 160% arial,sans-serif; color: #555555;">Rechnungen vorbereiten</h2>
+<%= form_tag :action => 'prepare' do %>
+  <p style="font-family: Verdana,sans-serif; font-size: 11px;">
+  EZ Nummer: 
+  <%= text_field_tag 'bill_nr', @start_bill_nr, :size=>"10"%><br>
+  Rechnungsdatum:
+  <%= text_field_tag 'bill_date', @bill_date, :size=>"10"%><br>
+  </p>
+  <%= submit_tag "Vorschau", :name => 'preview' %>
+  <%= submit_tag "Generieren", :name => 'create' %>
+<% end %>
+
+<h1 style="font: bold 160% arial,sans-serif; color: #555555;">Rechnungen drucken</h1>
+<%= form_tag :action => 'print' do %>
+  <p style="font-family: Verdana,sans-serif; font-size: 11px;">
+  Von: 
+  <%= text_field_tag 'from_bill_nr', @from_bill_nr, :size=>"10"%><br>
+  Zu: 
+  <%= text_field_tag 'to_bill_nr', @to_bill_nr, :size=>"10"%><br>
+  </p>
+  <%= submit_tag "PDF generieren" %>
+
+<% end %>
+
+<h1 style="font: bold 160% arial,sans-serif; color: #555555;">Ausstehende Rechnungen</h1>
+<p style="font-family: Verdana,sans-serif; font-size: 11px;">todo: Liste von ausstehenden Rechnungen erzeugen</p>
+
+

@@ -1,0 +1,6 @@
+.active-scaffold input.text-input, .active-scaffold select {
+    border: 1px solid;
+    font:  normal 12px arial;
+    letter-spacing: 0px;
+    border-color: #C0C0C0;
+}

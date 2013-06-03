@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  grading_date: 2012-08-05
+  positive: MyText
+  negative: MyText
+  comment: MyText
+
+two:
+  grading_date: 2012-08-05
+  positive: MyText
+  negative: MyText
+  comment: MyText

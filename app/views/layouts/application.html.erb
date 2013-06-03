@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Karate2</title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= stylesheet_link_tag 'active_scaffold_overrides' %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+
+<body class="<%= controller.controller_name %>">
+  <div id="banner">
+    <!--%= image_tag("topleft.gif") %-->
+    <%= @page_title || "Wado Karate Birmensdorf Datenbank" %>
+  </div>
+  <div id="columns">
+    <div id="side"> 
+      <ul>
+        <li><a href="/people">Personen</a></li> 
+        <li><a href="/bills">Rechnungslisten</a></li> 
+        <li><a href="/invoices">Semesterrechnungen</a></li>
+        <li><a href="/lists">Teilnehmerlisten</a></li>
+        <li><a href="/courses">Kurse</a></li>
+      </ul> 
+    </div>
+    <div id="main"> 
+      <%= yield %>
+    </div>
+  </div>
+</body>
+</html>

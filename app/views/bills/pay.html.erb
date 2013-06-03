@@ -1,0 +1,33 @@
+<!-- Many parts copy&pasted from update controller forms -->
+<% url_options = params_for(:action => :pay_final) -%>
+
+<%=
+  form_tag url_options,
+           :onsubmit => onsubmit,
+           :id => element_form_id(:action => :update),
+           :multipart => active_scaffold_config.update.multipart?,
+           :class => 'update',
+           :method => :put
+%>
+	 
+<h4>Rechnung quittieren</h4>
+
+<% columns = active_scaffold_config.update.columns %>
+
+<ol class="form" <%= 'style="display: none;"' if columns.collapsed -%>>
+  <% columns.each :for => @record do |column| -%>
+  <% if (column.name.to_s == "comment") or 
+        (column.name.to_s == "line_paied") %>
+  <li class="form-element <%= 'required' if column.required? %> <%= column.css_class unless column.css_class.nil? %>">
+    <%= render :partial => form_partial_for_column(column), :locals => { :column => column } -%>
+  </li>
+  <% end -%> 
+  <% end -%>
+</ol>
+  
+  <p class="form-footer">
+    <%= submit_tag as_(:update), :class => "submit" %>
+    <%= link_to as_(:cancel), main_path_to_return, :class => 'cancel' %>
+  </p>
+
+</form> 

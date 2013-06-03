@@ -1,0 +1,12 @@
+<% scope ||= nil %>
+<dl>
+  <dt>
+    <label for="<%= "record_#{column.name}" %>">
+      <%= active_scaffold_config.columns[:name].label %>
+    </label>
+  </dt>
+  <dd>
+    <%= form_column(active_scaffold_config.columns[:lastname], scope) %> 
+    <%= form_column(active_scaffold_config.columns[:firstname], scope) %>
+  </dd>
+</dl>
