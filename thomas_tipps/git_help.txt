@@ -1,0 +1,44 @@
+Setting up Git locally
+======================
+git init
+git add .
+git commit -m 'first commit'
+
+Setting up a repository on GitHub
+=================================
+- do it in the browser
+- make sure the ssh key is there
+- deletion is in Settings => DangerZone
+- going forward, the repository used is ThomasRisch/karate2
+
+Synchronising local Git to Remote
+=================================
+git remote add origin git@github.com:ThomasRisch/karate2
+git push -u origin master
+
+Deleting local Git stuff
+========================
+Deleting the whole bunch of stuff:
+rm -rf .git
+
+Deleting the remote:
+git remote rm karate2
+git remote -v
+
+
+Adding changes to Remote
+========================
+Find out what's new:
+git status
+
+Adding new/changed files to local:
+git add <filename>
+
+Commit to local:
+git commit -m 'Kommentar'
+
+Commit to remote:
+git push -u origin master
+
+
+
