@@ -23,12 +23,12 @@ class EmailReport < Prawn::Document
         if person.email.nil?
           missing_mails = missing_mails + person.name.to_s + "\n" 
         else
-          all_mails = all_mails + person.email.to_s + "; "
+          all_mails = all_mails + person.email.to_s + ", "
         end
       
       # Rechnungsadresse enthält Mail, dies ist die "erwachsene" Mailadresse.
       else
-        all_mails = all_mails + person.bill_email.to_s + "; "
+        all_mails = all_mails + person.bill_email.to_s + ", "
         if !person.email.nil?
           two_mails = two_mails + person.name.to_s + "\n"
         end
