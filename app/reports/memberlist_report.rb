@@ -15,7 +15,7 @@ class MemberlistReport < Prawn::Document
     people.each do |person|    
       row = []
       row << person.name.to_s + "\n <em>" + person.birthday.to_s + "</em>"
-      row << person.street + "\n" + person.zipcity
+      row << person.street.to_s + "\n" + person.zipcity.to_s
       row << "P: " + person.phone.to_s + "\n" + "M: " + person.mobile.to_s
       row << person.email.to_s + "\n" + person.bill_email.to_s
       table_content << row
