@@ -6,7 +6,7 @@ module PeopleHelper
   end
 
   def salutation_form_column(record, options)
-    select :record, :salutation, ["Herr", "Frau"]
+    select :record, :salutation, ["Herr", "Frau", "Familie"]
   end
 
 

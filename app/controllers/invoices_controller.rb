@@ -9,6 +9,7 @@ class InvoicesController < ApplicationController
     # Determine defaults for preparing bills
     @start_bill_prefix, @start_bill_nr = nextBillNr
     @bill_date = Time.now.day.to_s + "." + Time.now.month.to_s + "." + Time.now.year.to_s
+    @courses = Course.where('course_end IS NULL OR date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')
 
     # Determine defaults for printing
     bills = Bill.find :all, 
@@ -25,8 +26,9 @@ class InvoicesController < ApplicationController
     bill_prefix = params[:bill_prefix]
     bill_nr = params[:bill_nr]
     bill_date = params[:bill_date]
+    bill_course = params[:course]
 
-    bill_array = generate_bills(bill_prefix.to_i, bill_nr.to_i, bill_date)
+    bill_array = generate_bills(bill_prefix.to_i, bill_nr.to_i, bill_date, bill_course)
 
 
     # preview button pressed
@@ -57,13 +59,15 @@ class InvoicesController < ApplicationController
   # ----------------------------------------------------------------------------------
   # Additional methods
 
-  def generate_bills(bill_prefix_int, bill_nr_int, bill_date)
+  def generate_bills(bill_prefix_int, bill_nr_int, bill_date, bill_course)
  
     bill_array = Array.new
     
     # Loop over persons
-    person = Person.find :all, :order=> "lastname ASC, firstname ASC", 
-                         :conditions => "people.leave_date IS NULL"
+#    person = Person.find :all, :order=> "lastname ASC, firstname ASC", 
+#                         :conditions => "people.leave_date IS NULL"
+    person = Person.includes(:courses).find :all, :order=> "lastname ASC, firstname ASC",
+                                            :conditions => "people.leave_date IS NULL AND courses.id = " + bill_course.to_s
 
     i=0
     current_bill_nr = bill_nr_int
@@ -90,35 +94,50 @@ class InvoicesController < ApplicationController
       
       bill_array[i].issue_date = bill_date
 
-      # text line 1: amount
-      if p.is_yearly then # yearly bill
-        if Time.now.month > 3 and Time.now.month < 11 # yearly bill issued for October to April
-          bill_array[i].text1 = "Jahresbeitrag 1. Oktober " + Time.now.year.to_s + " - 30. September " + (Time.now.year+1).to_s
+      course = Course.find(bill_course)
+      if course.course_start.blank? then   # it is an ongoing course
+
+
+        # text line 1: amount
+        if p.is_yearly then # yearly bill
+          if Time.now.month > 3 and Time.now.month < 11 # yearly bill issued for October to April
+            bill_array[i].text1 = "Jahresbeitrag 1. Oktober " + Time.now.year.to_s + " - 30. September " + (Time.now.year+1).to_s
+            if not p.amount.blank?
+              bill_array[i].amount1 = monetize(p.amount)
+            else
+              bill_array[i].text1 = "Error: Betrag ist leer!"
+              bill_array[i].amount1 = "0.00"
+            end
+          else
+            #leave everything empty; yearly bills not charged between April and October
+          end
+        else # semester bill
+          next_semester = case Time.now.month
+            when 1..3 then "1. April - 31. September " + Time.now.year.to_s
+            when 4..9 then "1. Oktober " + Time.now.year.to_s + " - 31. März " + (Time.now.year+1).to_s
+            when 10..12 then "1. April - 31. September " + (Time.now.year+1).to_s
+            else "Error in invoices_controller"
+          end
+          bill_array[i].text1 = "Beitrag Halbjahr " + next_semester
           if not p.amount.blank?
             bill_array[i].amount1 = monetize(p.amount)
           else
             bill_array[i].text1 = "Error: Betrag ist leer!"
             bill_array[i].amount1 = "0.00"
           end
-        else
-          #leave everything empty; yearly bills not charged between April and October
         end
-      else # semester bill
-        next_semester = case Time.now.month
-          when 1..3 then "1. April - 31. September " + Time.now.year.to_s
-          when 4..9 then "1. Oktober " + Time.now.year.to_s + " - 31. März " + (Time.now.year+1).to_s
-          when 10..12 then "1. April - 31. September " + (Time.now.year+1).to_s
-          else "Error in invoices_controller"
-        end
-        bill_array[i].text1 = "Beitrag Halbjahr " + next_semester
+     
+      else     # it is a one time course
+        bill_array[i].text1 = course.course_desc
         if not p.amount.blank?
           bill_array[i].amount1 = monetize(p.amount)
         else
-          bill_array[i].text1 = "Error: Betrag ist leer!"
+#          bill_array[i].text1 = "Error: Betrag ist leer!"
           bill_array[i].amount1 = "0.00"
         end
+
       end
-      
+ 
       # text line 2: discount, only when there is an amount
       if (not p.discount.blank?) and (p.discount > 0) and (not bill_array[i].amount1.blank?)
         bill_array[i].text2 = "./. " + p.discount.to_i.to_s + "% Rabatt"
@@ -132,6 +151,7 @@ class InvoicesController < ApplicationController
         bill_array[i].text3 = "Lizenzmarke " + (Time.now.year.to_i + 1).to_s + " Swiss Karate Federation"
         bill_array[i].amount3 = "60.00"
       end
+
       
       # calculate bill total
       total = bill_array[i].amount1.to_f + bill_array[i].amount2.to_f + bill_array[i].amount3.to_f

@@ -28,7 +28,7 @@ class CoursesController < ApplicationController
   def delete_ignore?(record = nil)
     nested?
   end
-  def update_ignore?(record=nil)
+  def update_ignore?(record = nil)
     nested?
   end
 

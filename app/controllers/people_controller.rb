@@ -71,7 +71,7 @@ class PeopleController < ApplicationController
       bill_details.add :amount, :discount, :is_yearly
     end
     update.columns.add_subgroup "Rechnungsadresse" do |bill_group|
-      bill_group.add :bill_name, :bill_street, :bill_zipcity, :bill_email
+      bill_group.add :salutation, :bill_name, :bill_street, :bill_zipcity, :bill_email
     end
 
     columns[:birthday].description = "YYYY-mm-dd"

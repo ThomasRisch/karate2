@@ -1,8 +1,8 @@
 class Person < ActiveRecord::Base
 
   # Input from Rails book, p78, combined with Playtime excercise
-  validates_presence_of :name, :salutation, :firstname, :lastname, :street, :zipcity, :birthday, :amount, :entry_date, message: 'darf nicht leer sein.'
-
+#  validates_presence_of :name, :salutation, :firstname, :lastname, :street, :zipcity, :birthday, :amount, :entry_date, message: 'darf nicht leer sein.'
+  validates_presence_of :name, :salutation, :firstname, :lastname, :street, :zipcity, :amount, message: 'darf nicht leer sein.'
   # Required for  CarrierWave attachement handling
   mount_uploader :image, ImageUploader
 
