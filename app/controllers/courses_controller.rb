@@ -3,13 +3,14 @@
 class CoursesController < ApplicationController
   active_scaffold :course do |conf|
 
-    conf.columns = [:course_name, :course_desc, :course_start, :course_end]
+    conf.columns = [:course_name, :course_desc, :course_start, :course_end, :course_amount]
 
     # Labels all columns
     columns[:course_name].label = 'Kursname'
-    columns[:course_desc].label = 'Beschreibung'
+    columns[:course_desc].label = 'Rechnungstext'
     columns[:course_start].label = 'Startdatum'
     columns[:course_end].label = 'Enddatum'
+    columns[:course_amount].label = 'Kurskosten'
 
     actions.exclude :search
    

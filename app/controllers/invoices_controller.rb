@@ -39,7 +39,7 @@ class InvoicesController < ApplicationController
     # generate button pressed
     else
       bill_array.each do |bill|
-        bill.save
+        bill.save!   #raises exception if validation fails
       end
       redirect_to bills_path
     end   
@@ -129,13 +129,7 @@ class InvoicesController < ApplicationController
      
       else     # it is a one time course
         bill_array[i].text1 = course.course_desc
-        if not p.amount.blank?
-          bill_array[i].amount1 = monetize(p.amount)
-        else
-#          bill_array[i].text1 = "Error: Betrag ist leer!"
-          bill_array[i].amount1 = "0.00"
-        end
-
+        bill_array[i].amount1 = monetize(course.course_amount)
       end
  
       # text line 2: discount, only when there is an amount
@@ -147,7 +141,6 @@ class InvoicesController < ApplicationController
       # text line 3: license, only for these that have a colour belt
       grading = Grading.find_by_person_id(p.id)
       if (Time.now.month > 3 and Time.now.month < 10) and !grading.nil?
-      #if !grading.nil?
         bill_array[i].text3 = "Lizenzmarke " + (Time.now.year.to_i + 1).to_s + " Swiss Karate Federation"
         bill_array[i].amount3 = "60.00"
       end

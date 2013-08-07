@@ -66,7 +66,7 @@ class PeopleController < ApplicationController
       bill_group.add :salutation, :bill_name, :bill_street, :bill_zipcity, :bill_email
     end
 
-
+    update.columns.exclude :gradex, :notex, :docx, :coursex
     update.columns.add_subgroup "Rechnungsdetails" do |bill_details|
       bill_details.add :amount, :discount, :is_yearly
     end
