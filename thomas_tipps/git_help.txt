@@ -34,6 +34,9 @@ git status
 Adding new/changed files to local:
 git add <filename>
 
+Adding all files:
+git add .
+
 Commit to local:
 git commit -m 'Kommentar'
 
@@ -41,4 +44,26 @@ Commit to remote:
 git push -u origin master
 
 
+Getting Remote stuff
+====================
 
+Make sure the ssh key is working:
+ssh -T git@github.com
+
+Download branch:
+git clone git@github.com:ThomasRisch/karate2
+
+=> this will generate a karate2 directory in the current working dir.
+
+Installing new version of karate app
+====================================
+
+Move old stuff away
+Download fresh source
+Change Gemfile (uncomment thin webserver gem)
+copy ignored files back:
+- public/uploads
+- production.sqlite3
+
+Run the following command to get rid of the  ActionView::Template::Error :
+bundle exec rake assets:precompile
