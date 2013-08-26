@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 class InvoicesReport < Prawn::Document
-  def to_pdf(bill_array)
+  def to_pdf(bill_array, bill_course)
 
-    title = "Vorschau Rechnungen"
+    title = "Vorschau Rechnungen" + Course.find(bill_course).course_name
     fulltext = ""
     fullamount = ""
     fulltotal = 0.0

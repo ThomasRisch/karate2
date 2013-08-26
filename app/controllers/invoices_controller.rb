@@ -33,7 +33,7 @@ class InvoicesController < ApplicationController
 
     # preview button pressed
     if params[:preview]
-      output = InvoicesReport.new.to_pdf(bill_array)
+      output = InvoicesReport.new.to_pdf(bill_array, bill_course)
       send_data output, :filename => "Rechnungen.pdf", :type => "application/pdf"
 
     # generate button pressed

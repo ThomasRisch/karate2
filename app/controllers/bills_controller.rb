@@ -143,10 +143,14 @@ class BillsController < ApplicationController
 
 
   def print
+    # need to retreave array (with :all) otherwise tp_pdf method doesn't work
     records = Bill.find(:all, :conditions => ["id = ?", params[:id]])
 
+    # gsub strips comma from name
+    filename = "Rechnung " + records[0].name.gsub(/\,/,"") + ".pdf"
+
     output = BillReport.new.to_pdf(records)
-    send_data output, :filename => "Rechnung.pdf", :type => "application/pdf"
+    send_data output, :filename => filename, :type => "application/pdf"
 
   end
   

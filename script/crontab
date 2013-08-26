@@ -1,0 +1,7 @@
+# daily backup of karate db 
+0 5 * * * /usr/bin/rsync -ae ssh /var/rails/karate2/db/production.sqlite3 freeshells.ch:/home/thomas/karate
+# weekly backup of karate db to freeshells. PDF's not saved! Source is on GitHub.
+0 5 * * 1 /var/rails/karate2/script/backup.sh
+# monthly backup of PDF's to Freeshells. 
+0 5 24 * * /usr/bin/rsync -ae ssh /var/rails/karate2/public/images freeshells.ch:/home/thomas/karate
+0 5 24 * * /usr/bin/rsync -ae ssh /var/rails/karate2/public/uploads freeshells.ch:/home/thomas/karate

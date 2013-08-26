@@ -59,9 +59,10 @@ Installing new version of karate app
 ====================================
 
 Move old stuff away
-Download fresh source
+Download fresh source to home drive
+Move fresh source to /var/rails
 Change Gemfile (uncomment thin webserver gem)
-copy ignored files back:
+sudo copy -r ignored files back:
 - public/uploads
 - production.sqlite3
 

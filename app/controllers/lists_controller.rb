@@ -34,13 +34,20 @@ class ListsController < ApplicationController
       people.each do |person|
         row = ''
         row += ';'           # NDBJS_PERS_NR
-        row += 'm;'          # GESCHLECHT
-        row += person.lastname.to_s + ';'
+        row += 'm;'          # GESCHLECHT M oder F
+        row += person.lastname.to_s + ';'    # Umlaute sind problematisch.
         row += person.firstname.to_s + ';' 
         row += person.birthday.to_s + ';'
         row += ';'           # STRASSE
-        row += ';'           # PLZ
-        row += ';'           # ORT
+        row += person.zipcity.split(" ").first + ';'
+        case person.zipcity.split(" ").last
+        when "Birmensdorf"
+          row += "Birmensdorf ZH"
+        when "Arni"
+          row += "Arni AG"
+        else
+          row += person.zipcity.split(" ").last + ';'
+        end
         row += ';'           # LAND
         row += 'CH;'         # NATIONALITAET
         row += 'D;'          # ERSTSPRACHE
