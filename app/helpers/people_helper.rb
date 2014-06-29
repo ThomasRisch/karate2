@@ -9,5 +9,14 @@ module PeopleHelper
     select :record, :salutation, ["Herr", "Frau", "Familie"]
   end
 
+  def options_for_association_conditions(association)
+    if association.name == :courses
+      ['courses.id in (?)', Course.where("courses.course_end IS NULL or courses.course_end > ?", Date.today)]
+    else
+      super
+    end
+  end
+
+
 
 end

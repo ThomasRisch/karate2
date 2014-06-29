@@ -7,7 +7,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
     Grade.delete_all
-    Grade.create :name => "9.Kyu", :color => "Weissgurt"
+    Grade.create :name => "9.Kyu", :color => "Halbgelbgurt"
     Grade.create :name => "8.Kyu", :color => "Gelbgurt"
     Grade.create :name => "7.Kyu", :color => "Orangegurt"
     Grade.create :name => "6.Kyu", :color => "Grüngurt"
