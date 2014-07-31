@@ -138,9 +138,8 @@ class InvoicesController < ApplicationController
         bill_array[i].amount2 = "-" + monetize(bill_array[i].amount1.to_f/100*p.discount)
       end
 
-      # text line 3: license, only for these that have a colour belt
-      grading = Grading.find_by_person_id(p.id)
-      if (Time.now.month > 3 and Time.now.month < 10) and !grading.nil?
+      # text line 3: license, only for these that have a full colour belt
+      if (Time.now.month > 3 and Time.now.month < 10) and (p.gradings.count > 1)
         bill_array[i].text3 = "Lizenzmarke " + (Time.now.year.to_i + 1).to_s + " Swiss Karate Federation"
         bill_array[i].amount3 = "60.00"
       end
