@@ -44,6 +44,7 @@ class PeopleController < ApplicationController
     list.sorting = [{:lastname => :asc}, {:firstname => :asc}] # initial sort of list    
     columns[:name].sort_by :sql => 'lastname||firstname' # adds sorting capability on virtual column
     list.always_show_search = true
+    list.per_page = 50
 
     # Prepares Show, we dopn't want to see single attributes if there are combined, and we want to see groups
     show.columns.exclude :firstname, :lastname, :bill_firstname, :bill_lastname, :gradex, :notex, :docx, :coursex
@@ -96,5 +97,13 @@ class PeopleController < ApplicationController
     show.label = 'Details'
 
   end
+
+  # in main form, show only unpaied bills
+  def conditions_for_collection
+    if !nested? then
+      ['leave_date is null']
+    end
+  end
+
 
 end 

@@ -19,7 +19,7 @@ class CoursesController < ApplicationController
     delete.link.label = 'Löschen'
     show.link.label = 'Details'
     list.label = "Kurse"
-
+    list.per_page = 50
 
   end
 
