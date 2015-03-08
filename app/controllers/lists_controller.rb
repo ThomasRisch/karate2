@@ -1,17 +1,22 @@
 class ListsController < ApplicationController
   def index
-    @people= Person.all
+    @courses = Course.where('course_end IS NOT NULL AND date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')  # all ongoing plus onetime within a year
+    @trainings = Course.where('course_start IS NULL')
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @people }
     end
 
   end
 
   def courses
 
-    @course_id = params[:course]
+    if params[:course]!='' then
+      @course_id = params[:course]
+    end
+    if params[:training] != '' then
+      @course_id = params[:training]
+    end
 
     if params[:list]
 

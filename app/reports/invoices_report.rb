@@ -3,7 +3,11 @@
 class InvoicesReport < Prawn::Document
   def to_pdf(bill_array, bill_course)
 
-    title = "Vorschau Rechnungen" + Course.find(bill_course).course_name
+    if bill_course != ''
+      title = "Vorschau Kurs " + Course.find(bill_course).course_name
+    else
+      title = "Vorschau aller laufenden Kurse"
+    end
     fulltext = ""
     fullamount = ""
     fulltotal = 0.0

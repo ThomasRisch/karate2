@@ -98,12 +98,12 @@ class PeopleController < ApplicationController
 
   end
 
-  # in main form, show only unpaied bills
-  def conditions_for_collection
-    if !nested? then
-      ['leave_date is null']
-    end
-  end
+  # in main form, show active people
+  #def conditions_for_collection
+  #  if !nested? then
+  #    ['leave_date is null']
+  #  end
+  #end
 
 
 end 

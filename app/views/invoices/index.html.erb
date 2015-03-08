@@ -7,8 +7,13 @@
   <%= text_field_tag 'bill_date', @bill_date, :size=>"10"%><br>
   </p>
   <p style="font-family: Verdana,sans-serif; font-size: 11px;">
-  Kurs:
-  <%= select_tag "course", options_from_collection_for_select(@courses, "id", "course_name") %>
+  Logik:<br>
+  Eintrittsdatum leer =>  hat kein Vertrag, besucht Kurse<br>
+  Eintrittsdatum ausgefüllt => hat Vertrag, besucht laufende Trainings<br>
+  Kurs-Start leer => regelmässiges Training<br>
+  <br>
+  Kurs (keine Wahl => Rechnungen für alle laufenden Trainings):<br>
+  <%= select_tag "course", options_from_collection_for_select(@courses, "id", "course_name"), include_blank: true %>
   </p>
 
   <%= submit_tag "Vorschau", :name => 'preview' %>

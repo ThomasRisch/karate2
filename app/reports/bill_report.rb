@@ -123,7 +123,7 @@ class BillReport < Prawn::Document
       pdf.text "Total", :align => :right
       pdf.font pg_light
       pdf.text "\n"
-      pdf.text "Zahlbar innert 14 Tagen."
+      pdf.text "Zahlbar innert 30 Tagen."
       pdf.text "\n"
 
       @next_y = @current_y - pdf.bounds.height

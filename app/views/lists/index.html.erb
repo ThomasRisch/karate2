@@ -1,25 +1,19 @@
 <h2 style="font: bold 160% arial,sans-serif; color: #555555;">Teilnehmerlisten</h2>
 
-<% @courses = Course.where('course_end IS NULL OR date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")') %>
-<% @courses = Course.where("courses.course_end IS NULL or courses.course_end > ?", Date.today) %>
-
 <%= form_tag :action => 'courses' do %>
   <p style="font-family: Verdana,sans-serif; font-size: 11px;">
   Kurs:
-  <%= select_tag "course", options_from_collection_for_select(@courses, "id", "course_name") %>
-  <em>(Abgelaufene Kurse werden nicht mehr angezeigt.)</em>
+  <%= select_tag "course", options_from_collection_for_select(@courses, "id", "course_name"), include_blank: true %>
+  <em>(Kurse älter als ein Jahr werden nicht mehr angezeigt.)</em><br>
+
+  Training:
+  <%= select_tag "training", options_from_collection_for_select(@trainings, "id", "course_name"), include_blank: true %>
+
   </p>
+
 
   <%= submit_tag "Liste", :name => 'list' %>
   <%= submit_tag "Email", :name => 'email' %> 
   <%= submit_tag "CSV", :name => 'csv' %>
 
 <% end %>
-<br><br>
-
-<h1 style="font: bold 160% arial,sans-serif; color: #555555;">Rechnungslisten</h1>
-<p style="font-family: Verdana,sans-serif; font-size: 11px;">todo: Ausstehende Rechnungen</b>
-
-<h1 style="font: bold 160% arial,sans-serif; color: #555555;">Serienbriefe</h1>
-<p>todo: CSV für Kurs-Serienbrief</p>
-<p>todo: CSV für Prüfungs-Serienbrief</p>

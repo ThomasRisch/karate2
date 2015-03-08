@@ -9,7 +9,10 @@ class InvoicesController < ApplicationController
     # Determine defaults for preparing bills
     @start_bill_prefix, @start_bill_nr = nextBillNr
     @bill_date = Time.now.day.to_s + "." + Time.now.month.to_s + "." + Time.now.year.to_s
-    @courses = Course.where('course_end IS NULL OR date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')
+    
+    # Determines which courses are displayed at the select box
+#    @courses = Course.where('course_end IS NULL OR date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')  # all ongoing plus onetime within a year
+    @courses = Course.where('course_start IS NOT NULL')   # only onetime courses
 
     # Determine defaults for printing
     bills = Bill.find :all, 
@@ -63,12 +66,20 @@ class InvoicesController < ApplicationController
  
     bill_array = Array.new
     
-    # Loop over persons
-#    person = Person.find :all, :order=> "lastname ASC, firstname ASC", 
-#                         :conditions => "people.leave_date IS NULL"
-    person = Person.includes(:courses).find :all, :order=> "lastname ASC, firstname ASC",
-                                            :conditions => "people.leave_date IS NULL AND courses.id = " + bill_course.to_s
+    # Either get all members or get course members 
+    if bill_course == '' then
+      person = Person.find :all, :order=> "lastname ASC, firstname ASC", 
+                           :conditions => "people.leave_date IS NULL AND people.entry_date IS NOT NULL"
+      onetime_course = false                         # no course, we want bills for everybody as for ongoing courses
 
+    else
+      person = Person.includes(:courses).find :all, :order=> "lastname ASC, firstname ASC",
+                                              :conditions => "people.leave_date IS NULL AND courses.id = " + bill_course.to_s
+      course = Course.find(bill_course)              # get information about the passed course
+      onetime_course = !course.course_start.blank?   # having a curse_start indicates a onetime course
+
+    end
+  
     i=0
     current_bill_nr = bill_nr_int
 
@@ -94,9 +105,7 @@ class InvoicesController < ApplicationController
       
       bill_array[i].issue_date = bill_date
 
-      course = Course.find(bill_course)
-      if course.course_start.blank? then   # it is an ongoing course
-
+      if !onetime_course then                         # for all ongoing courses
 
         # text line 1: amount
         if p.is_yearly then # yearly bill
