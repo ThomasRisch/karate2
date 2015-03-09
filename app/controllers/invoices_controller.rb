@@ -122,9 +122,9 @@ class InvoicesController < ApplicationController
           end
         else # semester bill
           next_semester = case Time.now.month
-            when 1..3 then "1. April - 31. September " + Time.now.year.to_s
+            when 1..3 then "1. April - 30. September " + Time.now.year.to_s
             when 4..9 then "1. Oktober " + Time.now.year.to_s + " - 31. März " + (Time.now.year+1).to_s
-            when 10..12 then "1. April - 31. September " + (Time.now.year+1).to_s
+            when 10..12 then "1. April - 30. September " + (Time.now.year+1).to_s
             else "Error in invoices_controller"
           end
           bill_array[i].text1 = "Beitrag Halbjahr " + next_semester
