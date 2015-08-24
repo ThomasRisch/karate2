@@ -14,7 +14,7 @@ class BillReport < Prawn::Document
 
     # Adressen
     bank_str = "RAIFFEISEN Mutschellen-Reppischtal\n8965 Mutschellen"
-    adr_str = "Thomas Risch\nWado Karate Birmensdorf\nKirchgasse 23\n8903 Birmensdorf" 
+    adr_str = "Olivia Derungs Risch\nKeiko Kan\nKirchgasse 23\n8903 Birmensdorf" 
     kto_str = "01-9883-7"
 
     # Betrag
@@ -30,14 +30,14 @@ class BillReport < Prawn::Document
     prefix = bill.prefix
     nr = "00164"
     nr = bill.nr
-    ident = '0006032619067300' + prefix + nr
+#    ident = '0006032619067300' + prefix + nr
+    ident = '7394638067300' + prefix + nr
     ident = ident + mod10(ident).to_s
     ident_friendly = ident.reverse.scan(/.{1,5}/).join(' ').reverse
     ident_short = ident
     ident = ident + '+ '
 
     # Konto (immer gleich)
-    konto = "01-9883-7"
     kto = "010098837>"
 
 
@@ -68,7 +68,7 @@ class BillReport < Prawn::Document
 
     # Address
     pdf.bounding_box([pg_left + 270, pg_top-100], :width => pg_right) do
-      pdf.text "Wado Karate Birmensdorf, Kirchgasse 23, 8903 Birmensdorf", :size => 6
+      pdf.text "Keiko Kan, Kirchgasse 23, 8903 Birmensdorf", :size => 6
       pdf.text "\n" 
       if not bill.salutation.blank? then
         pdf.text bill.salutation
@@ -192,7 +192,7 @@ class BillReport < Prawn::Document
       end
       pdf.text "Mit freundlichen Grüssen"
       pdf.font pg_bold
-      pdf.text "Wado Karate Birmensdorf"
+      pdf.text "Olivia Derungs Risch"
       pdf.font pg_light
     end
 
@@ -257,8 +257,8 @@ class BillReport < Prawn::Document
       pdf.text ident_friendly, :align => :right
     end
 
-    # Full Number at the bottom
-    pdf.bounding_box [20,15], :width => (pg_right+50) do
+    # Full Number at the bottom (10 is absolute minimum... tested 2015)
+    pdf.bounding_box [20,10], :width => (pg_right+50) do
       pdf.text betr + ident + kto, :align => :right
     end
 

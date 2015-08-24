@@ -160,6 +160,9 @@ class InvoicesController < ApplicationController
       total = bill_array[i].amount1.to_f + bill_array[i].amount2.to_f + bill_array[i].amount3.to_f
       bill_array[i].total = monetize(total)
 
+      # general messages go here
+      bill_array[i].freetext = ""
+
       if total > 0 then
         i += 1
         current_bill_nr += 1
@@ -167,6 +170,7 @@ class InvoicesController < ApplicationController
         # remove all bills where total amount is zero
         bill_array.delete_at(i)
       end
+
     end
    
     return bill_array
