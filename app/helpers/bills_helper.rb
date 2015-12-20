@@ -52,6 +52,9 @@ module BillsHelper
   def bill_type_form_column(record, options)
     select :record, :bill_type, ["Rechnung", "Erste Mahnung", "Zweite Mahnung"]
   end
+  def company_form_column(record, options)
+    select :record, :company, ["", "Keikokan"]
+  end
 
   def amount1_form_column(record, options)
     text_field :record, :amount1, options

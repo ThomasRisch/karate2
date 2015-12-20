@@ -58,13 +58,25 @@ class BillReport < Prawn::Document
     # Header
     pdf.font pg_bold
     pdf.move_down 20
-    pdf.image "#{Prawn::BASEDIR}/data/images/wkb_header.png", :position=>:center, :scale => 1
-    pdf.bounding_box([pg_left + 15, pg_top-26], :width => pg_right-(pg_left+15)) do
-      pdf.fill_color pg_white
-      pdf.text "Wado Karate Birmensdorf", :size => 26
+
+    if bill.company.blank? then
+
+      pdf.image "#{Prawn::BASEDIR}/data/images/wkb_header.png", :position=>:center, :scale => 1
+      pdf.bounding_box([pg_left + 15, pg_top-26], :width => pg_right-(pg_left+15)) do
+        pdf.fill_color pg_white
+        pdf.text "Wado Karate Birmensdorf", :size => 26
+      end
       pdf.fill_color pg_black
+      pdf.font pg_light
+
+    elsif bill.company=="Karate" then
+
+      pdf.image "#{Prawn::BASEDIR}/data/images/keikokan_karate.png", :position=>:left, :width=>220, :at => [pg_left - 18, pg_top-37]
+
+
+    elsif bill.company=="Theater" then
+
     end
-    pdf.font pg_light
 
     # Address
     pdf.bounding_box([pg_left + 270, pg_top-100], :width => pg_right) do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807105252) do
+ActiveRecord::Schema.define(:version => 20151213074942) do
 
   create_table "bills", :force => true do |t|
     t.string   "prefix"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20130807105252) do
     t.integer  "person_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.string   "company"
   end
 
   create_table "courses", :force => true do |t|
@@ -74,6 +75,8 @@ ActiveRecord::Schema.define(:version => 20130807105252) do
     t.string   "color"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "sort_order"
+    t.integer  "next_grade"
   end
 
   create_table "gradings", :force => true do |t|

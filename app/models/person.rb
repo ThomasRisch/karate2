@@ -21,12 +21,11 @@ class Person < ActiveRecord::Base
   end
 
   def gradex
-    current_grading = Grading.find(:first, :conditions => "person_id = " + id.to_s, :order => "grade_id desc")
+    current_grading = Grading.find(:last, :conditions => "person_id = " + id.to_s)
     if not current_grading
       return '-'
     else
-      return Grade.find(current_grading.grade_id).name + ' - ' + Grade.find(current_grading.grade_id).color + " (" + I18n.l(current_grading
-.grading_date) + ")"
+      return Grade.find(current_grading.grade_id).name + ' - ' + Grade.find(current_grading.grade_id).color + " (" + I18n.l(current_grading.grading_date) + ")"
     end
   end
   

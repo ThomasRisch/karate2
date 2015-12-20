@@ -11,6 +11,7 @@ class BillsController < ApplicationController
                     :name, :firstname, :lastname, :salutation,
                     :bill_name, :bill_firstname, :bill_lastname,
                     :bill_street, :bill_zipcity,
+                    :company,
                     :text1, :amount1, :line1,
                     :text2, :amount2, :line2,
                     :text3, :amount3, :line3,
@@ -30,6 +31,7 @@ class BillsController < ApplicationController
     columns[:bill_name].label = 'Name, Vorname für Rechnung'    
     columns[:bill_lastname].label = 'Rechnung - Nachname'
     columns[:bill_firstname].label = 'Rechnung - Vorname'
+    columns[:company].label = 'Firma'
     columns[:text1].label = 'Zeile 1'
     columns[:amount1].label = 'Betrag 1'
     columns[:line1].label = 'Betrag, Zeile 1'
@@ -56,7 +58,7 @@ class BillsController < ApplicationController
     columns[:total].calculate = :sum
 
 
-    list.columns = [:fullnr, :name, :issue_date, :total, :paied_date, :paied_amount, :bill_type]
+    list.columns = [:fullnr, :name, :issue_date, :total, :company, :bill_type]
     show.columns.exclude :id, :prefix, :nr,
                          :firstname, :lastname, :bill_firstname, :bill_lastname,
                          :text1, :amount1, :text2, :amount2,
@@ -97,6 +99,9 @@ class BillsController < ApplicationController
 
     search.link.label = 'Suchen'
 
+
+    action_links.add :filter, :label => 'Filter'
+
   end
 
   # Create not available in main form, but in nested
@@ -113,6 +118,7 @@ class BillsController < ApplicationController
   def conditions_for_collection
     if !nested? then
       ['paied_date is null']
+#      ['company = "Karate"']
     end
   end
 

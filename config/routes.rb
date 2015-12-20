@@ -10,6 +10,7 @@ Karate2::Application.routes.draw do
 #  get "bills/pay"
 #  get "bills/remind"
 #  get "bills/print"
+  get "bills/filter"
   post "invoices/prepare"
   post "invoices/print"
 

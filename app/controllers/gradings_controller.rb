@@ -48,11 +48,12 @@ class GradingsController < ApplicationController
   # Additional methods
   
   def get_new_grade person_id
-    current_grading = Grading.find(:first, :conditions => "person_id = '" + person_id.to_s + "'", :order => "grade_id desc")
+    current_grading = Grading.find(:last, :conditions => "person_id = '" + person_id.to_s + "'")
     if current_grading.nil?
-      next_grade = Grade.find(1)
+      next_grade = Grade.order("sort_order").find(:first) 
     else
-      next_grade = Grade.find(current_grading.grade_id + 1)
+      current_grade = Grade.find(current_grading.grade_id)
+      next_grade = Grade.find(current_grade.next_grade)
     end
     return next_grade
   end
