@@ -116,7 +116,7 @@ class BillsController < ApplicationController
   def conditions_for_collection
     if !nested? then
       ['paied_date is null']
-#      ['company = "Keikokan"']
+#      ['company = "Keiko Kan"']
     end
   end
 
