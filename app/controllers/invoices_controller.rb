@@ -102,6 +102,7 @@ class InvoicesController < ApplicationController
       bill_array[i].bill_type = 'Rechnung'
       bill_array[i].salutation = p.salutation
       bill_array[i].person_id = p.id
+      bill_array[i].company = "Keiko Kan"
       
       bill_array[i].issue_date = bill_date
 

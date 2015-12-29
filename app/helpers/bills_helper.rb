@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module BillsHelper
  
   #Helpers for update, create
@@ -42,6 +44,7 @@ module BillsHelper
       person.bill_street.blank? ? @record.bill_street = person.street : @record.bill_street = person.bill_street
       person.bill_zipcity.blank? ? @record.bill_zipcity = person.zipcity : @record.bill_zipcity = person.bill_zipcity
       @record.bill_type = 'Rechnung'
+      @record.company = 'Keiko Kan'
     end
     text_field :record, :lastname, options
   end
@@ -53,7 +56,7 @@ module BillsHelper
     select :record, :bill_type, ["Rechnung", "Erste Mahnung", "Zweite Mahnung"]
   end
   def company_form_column(record, options)
-    select :record, :company, ["", "Keikokan"]
+    select :record, :company, ["", "Keiko Kan", "Hühner-Rei"]
   end
 
   def amount1_form_column(record, options)
@@ -74,6 +77,11 @@ module BillsHelper
   def paied_amount_form_column(record, options)
     text_field :record, :paied_amount, options
   end
+
+
+#  def company_search_column(record, input_name)
+#    select :record, :company,  options_for_select(['open', 'closed'])
+#  end
 
   # Helper to get number into a currency format string
   # Credits:
