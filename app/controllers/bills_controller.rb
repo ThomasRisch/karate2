@@ -4,7 +4,6 @@ class BillsController < ApplicationController
   # For monetize
   include BillsHelper
 
-
   active_scaffold :bill do |conf|
 
     conf.columns = [:id, :fullnr, :prefix, :nr, 
@@ -67,8 +66,8 @@ class BillsController < ApplicationController
     create.columns.exclude :id
     update.columns.exclude :id
 
-    # Seachr is ignored based on return level of the search_ignore function defined later down 
-    conf.search.link.ignore_method = :search_ignore?
+    # Search is ignored based on return level of the search_ignore function defined later down 
+    search.link.ignore_method = :search_ignore?
 
     list.label = 'Rechnungen'
     list.sorting = [{ :prefix => :asc}, {:nr => :asc}]
@@ -100,9 +99,8 @@ class BillsController < ApplicationController
     search.link.label = 'Suchen'
 
 
-    action_links.add :filter, :label => 'Filter'
-
   end
+
 
   # Create not available in main form, but in nested
   def create_ignore?
@@ -118,12 +116,10 @@ class BillsController < ApplicationController
   def conditions_for_collection
     if !nested? then
       ['paied_date is null']
-#      ['company = "Karate"']
+#      ['company = "Keiko Kan"']
     end
   end
 
-  def all
-  end
 
   def pay
     @record = Bill.find(params[:id])

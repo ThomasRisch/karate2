@@ -43,6 +43,9 @@ git commit -m 'Kommentar'
 Commit to remote:
 git push -u origin master
 
+If something breaks:
+git push origin master --force
+
 
 Getting Remote stuff
 ====================

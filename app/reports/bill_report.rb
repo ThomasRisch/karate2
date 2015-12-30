@@ -10,37 +10,6 @@ class BillReport < Prawn::Document
 
     !first ? pdf.start_new_page : first=false
 
-    # Vorbereiten Rechnunsbeschriftung
-
-    # Adressen
-    bank_str = "RAIFFEISEN Mutschellen-Reppischtal\n8965 Mutschellen"
-    adr_str = "Olivia Derungs Risch\nKeiko Kan\nKirchgasse 23\n8903 Birmensdorf" 
-    kto_str = "01-9883-7"
-
-    # Betrag
-    betrStr = "3949.75"
-    betrStr = bill.total
-    b = 100
-    betr = '01' + "%010d" % (betrStr.to_f*b).to_i
-    betr = betr + mod10(betr).to_s + '>'
-    betr_fr, betr_rp = bill.total.split('.')
-
-    # Nummer
-    prefix = "00000"
-    prefix = bill.prefix
-    nr = "00164"
-    nr = bill.nr
-#    ident = '0006032619067300' + prefix + nr
-    ident = '7394638067300' + prefix + nr
-    ident = ident + mod10(ident).to_s
-    ident_friendly = ident.reverse.scan(/.{1,5}/).join(' ').reverse
-    ident_short = ident
-    ident = ident + '+ '
-
-    # Konto (immer gleich)
-    kto = "010098837>"
-
-
     # Constants on page style
     pg_left = 50
     pg_right = pdf.bounds.width - 50
@@ -55,32 +24,72 @@ class BillReport < Prawn::Document
     pdf.font_size 12
 
 
-    # Header
-    pdf.font pg_bold
-    pdf.move_down 20
+    # Vorbereiten Rechnunsbeschriftung
 
-    if bill.company.blank? then
+    # Betrag
+    betrStr = bill.total
+    b = 100
+    betr = '01' + "%010d" % (betrStr.to_f*b).to_i
+    betr = betr + mod10(betr).to_s + '>'
+    betr_fr, betr_rp = bill.total.split('.')
 
-      pdf.image "#{Prawn::BASEDIR}/data/images/wkb_header.png", :position=>:center, :scale => 1
-      pdf.bounding_box([pg_left + 15, pg_top-26], :width => pg_right-(pg_left+15)) do
-        pdf.fill_color pg_white
-        pdf.text "Wado Karate Birmensdorf", :size => 26
-      end
-      pdf.fill_color pg_black
-      pdf.font pg_light
+    # Adressen
+    if bill.company.blank? or bill.company == "Keiko Kan" then
 
-    elsif bill.company=="Karate" then
+      # Bankverbindung 
+      bank_str = "RAIFFEISEN Mutschellen-Reppischtal\n8965 Mutschellen"
+      adr_str = "Olivia Derungs Risch\nKeiko Kan\nKirchgasse 23\n8903 Birmensdorf" 
+      kto_str = "01-9883-7"
 
+      # für EZ-Nummer
+      prefix = bill.prefix
+      nr = bill.nr
+      ident = '7394638067300' + prefix + nr
+      ident = ident + mod10(ident).to_s
+      ident_friendly = ident.reverse.scan(/.{1,5}/).join(' ').reverse
+      ident_short = ident
+      ident = ident + '+ '
+      kto = "010098837>"
+
+
+      # Bilder, Logos, Corporate Identity
+      # Prawn::BASEDIR = /home/thomas/.rvm/gems/ruby-1.9.3-p194/gems/prawn-0.12.0
       pdf.image "#{Prawn::BASEDIR}/data/images/keikokan_karate.png", :position=>:left, :width=>220, :at => [pg_left - 18, pg_top-37]
+      absender = "Keiko Kan, Kirchgasse 23, 8903 Birmensdorf"
 
+    elsif bill.company == "Hühner-Rei"
 
-    elsif bill.company=="Theater" then
+      # Bankverbindung
+      bank_str = "UBS AG\n8903 Birmensdorf"
+      adr_str = "Olivia Derungs Risch\nKirchgasse 23\n8903 Birmensdorf"
+      kto_str = "80-2-2"
+
+      # keine EZ Nummer
+      betr = kto = ident = ident_friendly = ident_short = ""
+
+      # Bilder, Logos, Corporate Identity
+      pdf.image "#{Prawn::BASEDIR}/data/images/huehnerlogo.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
+      absender = "Hühner-Rei\nOlivia Derungs Risch, Kirchgasse 23, 8903 Birmensdorf"
+
+    elsif bill.company == "Olivia KVV"
+
+      # Bankverbindung
+      bank_str = "UBS AG\n8903 Birmensdorf"
+      adr_str = "Olivia Derungs Risch\nKirchgasse 23\n8903 Birmensdorf"
+      kto_str = "80-2-2"
+
+      # keine EZ Nummer
+      betr = kto = ident = ident_friendly = ident_short = ""
+
+      # Bilder, Logos, Corporate Identity
+      #pdf.image "#{Prawn::BASEDIR}/data/images/huehnerlogo.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
+      absender = "Wille & Wohl, Olivia Derungs Risch, lic.iur.\nKirchgasse 23, 8903 Birmensdorf"
 
     end
 
     # Address
     pdf.bounding_box([pg_left + 270, pg_top-100], :width => pg_right) do
-      pdf.text "Keiko Kan, Kirchgasse 23, 8903 Birmensdorf", :size => 6
+      pdf.text absender, :size => 6
       pdf.text "\n" 
       if not bill.salutation.blank? then
         pdf.text bill.salutation
@@ -94,13 +103,18 @@ class BillReport < Prawn::Document
     end
 
     pdf.bounding_box [pg_left,@current_y], :width => pg_right-(pg_left) do
+      pdf.font pg_light
       # uses i18l API, configured to :de in environment.rb (http://guides.rubyonrails.org/i18n.html)
       # as we are in the helper here, it must be spelled out I18n.l; in controler l is sufficient.
       pdf.text I18n.l(bill.issue_date, :format => :long)
       pdf.text " "
       pdf.text " "
       pdf.font pg_bold
-      pdf.text bill.bill_type + " Nr. " + bill.prefix + " " + bill.nr
+      if !bill.prefix.blank? and !bill.nr.blank? then
+        pdf.text bill.bill_type + " Nr. " + bill.prefix + " " + bill.nr
+      else
+        pdf.text bill.bill_type 
+      end
 
       pdf.font pg_light
       pdf.text " "
