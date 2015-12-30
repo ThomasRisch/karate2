@@ -56,7 +56,7 @@ module BillsHelper
     select :record, :bill_type, ["Rechnung", "Erste Mahnung", "Zweite Mahnung"]
   end
   def company_form_column(record, options)
-    select :record, :company, ["", "Keiko Kan", "Hühner-Rei"]
+    select :record, :company, ["", "Keiko Kan", "Hühner-Rei", "Olivia KVV"]
   end
 
   def amount1_form_column(record, options)

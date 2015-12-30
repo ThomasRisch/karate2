@@ -71,6 +71,20 @@ class BillReport < Prawn::Document
       pdf.image "#{Prawn::BASEDIR}/data/images/huehnerlogo.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
       absender = "Hühner-Rei\nOlivia Derungs Risch, Kirchgasse 23, 8903 Birmensdorf"
 
+    elsif bill.company == "Olivia KVV"
+
+      # Bankverbindung
+      bank_str = "UBS AG\n8903 Birmensdorf"
+      adr_str = "Olivia Derungs Risch\nKirchgasse 23\n8903 Birmensdorf"
+      kto_str = "80-2-2"
+
+      # keine EZ Nummer
+      betr = kto = ident = ident_friendly = ident_short = ""
+
+      # Bilder, Logos, Corporate Identity
+      #pdf.image "#{Prawn::BASEDIR}/data/images/huehnerlogo.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
+      absender = "Wille & Wohl, Olivia Derungs Risch, lic.iur.\nKirchgasse 23, 8903 Birmensdorf"
+
     end
 
     # Address
