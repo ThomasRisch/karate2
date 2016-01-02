@@ -54,6 +54,8 @@ class BillReport < Prawn::Document
 
       # Bilder, Logos, Corporate Identity
       # Prawn::BASEDIR = /home/thomas/.rvm/gems/ruby-1.9.3-p194/gems/prawn-0.12.0
+      # or
+      # Prawn::BASEDIR = /home/thomas/.rbenv/versions/1.9.3-p194/lib/ruby/gems/1.9.1/gems/prawn-0.12.0
       pdf.image "#{Prawn::BASEDIR}/data/images/keikokan_karate.png", :position=>:left, :width=>220, :at => [pg_left - 18, pg_top-37]
       absender = "Keiko Kan, Kirchgasse 23, 8903 Birmensdorf"
 
@@ -82,7 +84,7 @@ class BillReport < Prawn::Document
       betr = kto = ident = ident_friendly = ident_short = ""
 
       # Bilder, Logos, Corporate Identity
-      #pdf.image "#{Prawn::BASEDIR}/data/images/huehnerlogo.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
+      pdf.image "#{Prawn::BASEDIR}/data/images/wundw.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
       absender = "Wille & Wohl, Olivia Derungs Risch, lic.iur.\nKirchgasse 23, 8903 Birmensdorf"
 
     end
