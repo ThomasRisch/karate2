@@ -18,9 +18,10 @@ class BillReport < Prawn::Document
     pg_black = "000000"
     pg_blue = "0276fd"
     # located in ~/.rvm/gems/ruby-1.9.3-p194/gems/prawn-0.12.0/
-    pg_bold = "#{Prawn::BASEDIR}/data/fonts/Ftb_____.ttf"
-    pg_light = "#{Prawn::BASEDIR}/data/fonts/Ftl_____.ttf"
-    pg_ocr = "#{Prawn::BASEDIR}/data/fonts/OCRB.ttf"
+    #rootpath = "#{Prawn::BASEDIR}"
+    pg_bold = "#{Rails.root}/app/assets/fonts/Ftb_____.ttf"
+    pg_light = "#{Rails.root}/app/assets/fonts/Ftl_____.ttf"
+    pg_ocr = "#{Rails.root}/app/assets/fonts/OCRB.ttf"
     pdf.font_size 12
 
 
@@ -56,7 +57,7 @@ class BillReport < Prawn::Document
       # Prawn::BASEDIR = /home/thomas/.rvm/gems/ruby-1.9.3-p194/gems/prawn-0.12.0
       # or
       # Prawn::BASEDIR = /home/thomas/.rbenv/versions/1.9.3-p194/lib/ruby/gems/1.9.1/gems/prawn-0.12.0
-      pdf.image "#{Prawn::BASEDIR}/data/images/keikokan_karate.png", :position=>:left, :width=>220, :at => [pg_left - 18, pg_top-37]
+      pdf.image "#{Rails.root}/app/assets/images/keikokan_karate.png", :position=>:left, :width=>220, :at => [pg_left - 18, pg_top-37]
       absender = "Keiko Kan, Kirchgasse 23, 8903 Birmensdorf"
 
     elsif bill.company == "Hühner-Rei"
@@ -70,7 +71,7 @@ class BillReport < Prawn::Document
       betr = kto = ident = ident_friendly = ident_short = ""
 
       # Bilder, Logos, Corporate Identity
-      pdf.image "#{Prawn::BASEDIR}/data/images/huehnerlogo.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
+      pdf.image "#{Rails.root}/app/assets/images/huehnerlogo.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
       absender = "Hühner-Rei\nOlivia Derungs Risch, Kirchgasse 23, 8903 Birmensdorf"
 
     elsif bill.company == "Olivia KVV"
@@ -84,7 +85,7 @@ class BillReport < Prawn::Document
       betr = kto = ident = ident_friendly = ident_short = ""
 
       # Bilder, Logos, Corporate Identity
-      pdf.image "#{Prawn::BASEDIR}/data/images/wundw.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
+      pdf.image "#{Rails.root}/app/assets/images/wundw.png", :position=>:left, :width=>100, :at => [pg_left, pg_top-37]
       absender = "Wille & Wohl, Olivia Derungs Risch, lic.iur.\nKirchgasse 23, 8903 Birmensdorf"
 
     end

@@ -11,8 +11,7 @@ class InvoicesController < ApplicationController
     @bill_date = Time.now.day.to_s + "." + Time.now.month.to_s + "." + Time.now.year.to_s
     
     # Determines which courses are displayed at the select box
-#    @courses = Course.where('course_end IS NULL OR date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')  # all ongoing plus onetime within a year
-    @courses = Course.where('course_start IS NOT NULL')   # only onetime courses
+    @courses = Course.where('course_end IS NOT NULL AND date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')  # all ongoing plus onetime within a year
 
     # Determine defaults for printing
     bills = Bill.find :all, 
