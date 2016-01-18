@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151213074942) do
+ActiveRecord::Schema.define(:version => 20160118081219) do
 
   create_table "bills", :force => true do |t|
     t.string   "prefix"
@@ -39,9 +39,10 @@ ActiveRecord::Schema.define(:version => 20151213074942) do
     t.text     "comment"
     t.string   "bill_type"
     t.integer  "person_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "company"
+    t.string   "bill_streetprefix"
   end
 
   create_table "courses", :force => true do |t|
@@ -120,8 +121,9 @@ ActiveRecord::Schema.define(:version => 20151213074942) do
     t.float    "amount"
     t.float    "discount"
     t.boolean  "is_yearly"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "bill_streetprefix"
   end
 
 end

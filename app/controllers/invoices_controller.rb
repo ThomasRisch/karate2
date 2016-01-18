@@ -91,6 +91,7 @@ class InvoicesController < ApplicationController
      
       bill_array[i].firstname = p.firstname
       bill_array[i].lastname = p.lastname
+      bill_array[i].bill_streetprefix = p.bill_streetprefix
  
       # if bill_ is empty, normal name is taken
       p.bill_lastname.blank? ? bill_array[i].bill_lastname = p.lastname : bill_array[i].bill_lastname = p.bill_lastname
@@ -102,6 +103,7 @@ class InvoicesController < ApplicationController
       bill_array[i].salutation = p.salutation
       bill_array[i].person_id = p.id
       bill_array[i].company = "Keiko Kan"
+      bill_array[i].freetext = "Herzlichen Dank für das Vertrauen."
       
       bill_array[i].issue_date = bill_date
 
@@ -159,9 +161,6 @@ class InvoicesController < ApplicationController
       # calculate bill total
       total = bill_array[i].amount1.to_f + bill_array[i].amount2.to_f + bill_array[i].amount3.to_f
       bill_array[i].total = monetize(total)
-
-      # general messages go here
-      bill_array[i].freetext = ""
 
       if total > 0 then
         i += 1

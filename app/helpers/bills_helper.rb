@@ -39,18 +39,20 @@ module BillsHelper
       @record.lastname = person.lastname
       @record.firstname = person.firstname
       @record.salutation = person.salutation
+      @record.bill_streetprefix = person.bill_streetprefix
       person.bill_lastname.blank? ? @record.bill_lastname = person.lastname : @record.bill_lastname = person.bill_lastname
       person.bill_firstname.blank? ? @record.bill_firstname = person.firstname : @record.bill_firstname = person.bill_firstname
       person.bill_street.blank? ? @record.bill_street = person.street : @record.bill_street = person.bill_street
       person.bill_zipcity.blank? ? @record.bill_zipcity = person.zipcity : @record.bill_zipcity = person.bill_zipcity
       @record.bill_type = 'Rechnung'
       @record.company = 'Keiko Kan'
+      @record.freetext = 'Herzlichen Dank für das Vertrauen.'
     end
     text_field :record, :lastname, options
   end
 
   def salutation_form_column(record, options)
-    select :record, :salutation, ["Herr", "Frau"]
+    select :record, :salutation, ["", "Herr", "Frau", "Familie"]
   end
   def bill_type_form_column(record, options)
     select :record, :bill_type, ["Rechnung", "Erste Mahnung", "Zweite Mahnung"]

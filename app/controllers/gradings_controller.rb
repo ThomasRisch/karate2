@@ -8,10 +8,13 @@ class GradingsController < ApplicationController
     columns[:grading_date].sort = false
     columns[:comment].label = 'Kommentar'
     columns[:comment].sort = false
+    columns[:comment].options = {:cols => "75", :rows => "6"}
     columns[:positive].label = 'Positiv'
     columns[:positive].sort = false
+    columns[:positive].options = {:cols => "75", :rows => "6"}
     columns[:negative].label = 'Negativ'
     columns[:negative].sort = false
+    columns[:negative].options = {:cols => "75", :rows => "6"}
 
     conf.actions.exclude :search
 

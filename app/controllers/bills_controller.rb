@@ -9,7 +9,7 @@ class BillsController < ApplicationController
     conf.columns = [:id, :fullnr, :prefix, :nr, 
                     :name, :firstname, :lastname, :salutation,
                     :bill_name, :bill_firstname, :bill_lastname,
-                    :bill_street, :bill_zipcity,
+                    :bill_streetprefix, :bill_street, :bill_zipcity,
                     :company,
                     :text1, :amount1, :line1,
                     :text2, :amount2, :line2,
@@ -25,6 +25,7 @@ class BillsController < ApplicationController
     columns[:lastname].label = 'Nachname'
     columns[:firstname].label = 'Vorname'
     columns[:salutation].label = 'Anrede'
+    columns[:bill_streetprefix].label = 'Adresszusatz'
     columns[:bill_street].label = 'Strasse'
     columns[:bill_zipcity].label = 'PLZ Ort'
     columns[:bill_name].label = 'Name, Vorname für Rechnung'    
@@ -50,8 +51,10 @@ class BillsController < ApplicationController
     columns[:paied_amount].label = 'Betrag bezahlt'
     columns[:line_paied].label = 'Bezahlt, Datum'
     columns[:freetext].label = 'Freitext'
+    columns[:freetext].options = {:cols => "75", :rows => "6"}
     columns[:bill_type].label = 'Rechnungsart'
     columns[:comment].label = 'Kommentar'
+    columns[:comment].options = {:cols => "75", :rows => "6"}
 
 
     columns[:total].calculate = :sum
@@ -97,7 +100,6 @@ class BillsController < ApplicationController
     delete.link.label = 'Löschen'
 
     search.link.label = 'Suchen'
-
 
   end
 

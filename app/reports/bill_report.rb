@@ -92,12 +92,16 @@ class BillReport < Prawn::Document
 
     # Address
     pdf.bounding_box([pg_left + 270, pg_top-100], :width => pg_right) do
+      pdf.font pg_light
       pdf.text absender, :size => 6
       pdf.text "\n" 
       if not bill.salutation.blank? then
         pdf.text bill.salutation
       end
       pdf.text bill.bill_firstname + " " + bill.bill_lastname
+      if not bill.bill_streetprefix.blank? then
+        pdf.text bill.bill_streetprefix
+      end
       pdf.text bill.bill_street
       pdf.text bill.bill_zipcity
       pdf.text "\n\n"
@@ -213,12 +217,12 @@ class BillReport < Prawn::Document
       else
         pdf.text "\n"
       end
-      pdf.text "\n"
+      pdf.text "\n\n"
 
-      if bill.bill_type == "Rechnung" then
-        pdf.text "Herzlichen Dank für das Vertrauen."
-        pdf.text "\n"
-      end
+#      if bill.bill_type == "Rechnung" then
+#        pdf.text "Herzlichen Dank für das Vertrauen."
+#        pdf.text "\n"
+#      end
       pdf.text "Mit freundlichen Grüssen"
       pdf.font pg_bold
       pdf.text "Olivia Derungs Risch"

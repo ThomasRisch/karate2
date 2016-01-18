@@ -5,7 +5,7 @@ class PeopleController < ApplicationController
 
     # Explicitly adds all columns we need, in specific order
     config.columns = [:name, :firstname, :lastname, :street, :zipcity, :birthday, :entry_date, :leave_date, :email, :phone, :mobile, :birthday, :image,
-                      :amount, :discount, :is_yearly, :salutation, :bill_name, :bill_firstname, :bill_lastname, :bill_street, :bill_zipcity, :bill_email,
+                      :amount, :discount, :is_yearly, :salutation, :bill_name, :bill_firstname, :bill_lastname, :bill_streetprefix, :bill_street, :bill_zipcity, :bill_email,
                       :gradex, :notex, :docx, :coursex]
     
     # Labels all columns
@@ -26,6 +26,7 @@ class PeopleController < ApplicationController
     columns[:bill_name].label = 'Name, Vorname'
     columns[:bill_lastname].label = 'Nachname'
     columns[:bill_firstname].label = 'Vorname'
+    columns[:bill_streetprefix].label = 'Adresszusatz'
     columns[:bill_street].label = 'Strasse'
     columns[:bill_zipcity].label = 'PLZ Ort'
     columns[:bill_email].label = 'E-Mail'
@@ -52,7 +53,7 @@ class PeopleController < ApplicationController
       bill_details.add :amount, :discount, :is_yearly
     end
     show.columns.add_subgroup "Rechnungsadresse" do |bill_group|
-      bill_group.add :salutation, :bill_name, :bill_street, :bill_zipcity, :bill_email
+      bill_group.add :salutation, :bill_name, :bill_streetprefix, :bill_street, :bill_zipcity, :bill_email
     end
 
 
@@ -64,7 +65,7 @@ class PeopleController < ApplicationController
       bill_details.add :amount, :discount, :is_yearly
     end
     create.columns.add_subgroup "Rechnungsadresse" do |bill_group|
-      bill_group.add :salutation, :bill_name, :bill_street, :bill_zipcity, :bill_email
+      bill_group.add :salutation, :bill_name, :bill_streetprefix, :bill_street, :bill_zipcity, :bill_email
     end
 
     update.columns.exclude :gradex, :notex, :docx, :coursex
@@ -72,7 +73,7 @@ class PeopleController < ApplicationController
       bill_details.add :amount, :discount, :is_yearly
     end
     update.columns.add_subgroup "Rechnungsadresse" do |bill_group|
-      bill_group.add :salutation, :bill_name, :bill_street, :bill_zipcity, :bill_email
+      bill_group.add :salutation, :bill_name, :bill_streetprefix, :bill_street, :bill_zipcity, :bill_email
     end
 
     columns[:birthday].description = "YYYY-mm-dd"

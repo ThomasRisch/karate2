@@ -5,6 +5,7 @@ class DocumentsController < ApplicationController
     columns[:doctype].label = 'Typ'
     columns[:filename].label = 'Filename'
     columns[:comment].label = 'Kommentar'    
+    columns[:comment].options = {:cols => "75", :rows => "6"}
     actions.exclude :search   
 
     columns[:doctype].form_ui = :select

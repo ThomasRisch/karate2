@@ -16,16 +16,4 @@ module GradingsHelper
     end
   end
 
-  # Form override (nicer formatting)
-  def comment_form_column(record, input_name)
-    text_area :record , :comment, :cols => 37, :rows => 6
-  end
-  def positive_form_column(record, input_name)
-    text_area :record , :positive, :cols => 37, :rows => 6
-  end
-  def negative_form_column(record, input_name)
-    text_area :record , :negative, :cols => 37, :rows => 6
-  end
-
-
 end
