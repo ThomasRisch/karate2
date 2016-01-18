@@ -47,8 +47,8 @@ If something breaks:
 git push origin master --force
 
 
-Getting Remote stuff
-====================
+Getting Everything from Remote
+==============================
 
 Make sure the ssh key is working:
 ssh -T git@github.com
@@ -57,6 +57,26 @@ Download branch:
 git clone git@github.com:ThomasRisch/karate2
 
 => this will generate a karate2 directory in the current working dir.
+
+
+Getting Files from Remote
+=========================
+
+If local files are changed, you want to discard it.
+
+git stash save --keep-index
+git stash drop
+(according to: http://stackoverflow.com/questions/52704/how-do-you-discard-unstaged-changes-in-git )
+
+Get the new stuff:
+git pull -u origin master
+
+
+Migrating the database in production
+====================================
+
+rake db:migrate RAILS_ENV="production"
+
 
 Installing new version of karate app
 ====================================
