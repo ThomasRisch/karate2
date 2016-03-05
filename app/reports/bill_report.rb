@@ -249,20 +249,20 @@ class BillReport < Prawn::Document
     # Betrag
     pdf.font pg_ocr
     pdf.font_size 10
-    pdf.bounding_box [58,108], :width=>80 do
+    pdf.bounding_box [58,106], :width=>80 do
       pdf.text betr_fr + "   " + betr_rp
     end
-    pdf.bounding_box [233,108], :width=>80 do
+    pdf.bounding_box [233,106], :width=>80 do
       pdf.text betr_fr + "   " + betr_rp
     end
 
     # Kontonummer
     pdf.font pg_light
     pdf.font_size 9
-    pdf.bounding_box [42,131], :width=>50 do
+    pdf.bounding_box [42,129], :width=>50 do
       pdf.text kto_str
     end
-    pdf.bounding_box [217,131], :width=>50 do
+    pdf.bounding_box [217,129], :width=>50 do
       pdf.text kto_str
     end
 
@@ -286,7 +286,7 @@ class BillReport < Prawn::Document
     # Nummern
     pdf.font pg_ocr
     pdf.font_size 10
-    pdf.bounding_box [25,159], :width => (pg_right+55) do
+    pdf.bounding_box [25,157], :width => (pg_right+55) do
       pdf.text ident_friendly, :align => :right
     end
 
