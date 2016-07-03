@@ -7,20 +7,29 @@ Karate2::Application.routes.draw do
 
 # direct routes
   post "lists/courses"
+  post "lists/exams"
 #  get "bills/pay"
 #  get "bills/remind"
 #  get "bills/print"
   get "bills/filter"
   post "invoices/prepare"
   post "invoices/print"
+#  post "gradings/print"
 
 # Active Scaffold routes
   resources :notes do as_routes end
   resources :people do as_routes end
   resources :courses do as_routes end
   resources :documents do as_routes end
-  resources :gradings do as_routes end
   resources :grades do as_routes end
+
+# Routes with individual actions
+resources :gradings do
+  member do
+    get 'print'
+  end
+  as_routes
+end
 
 resources :bills do 
   member do

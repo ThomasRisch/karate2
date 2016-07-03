@@ -1,11 +1,20 @@
 class ListsController < ApplicationController
+
   def index
     @courses = Course.where('course_end IS NOT NULL AND date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')  # all ongoing plus onetime within a year
     @trainings = Course.where('course_start IS NULL')
+#Problem is here:
+#    @exams = Grading.find_by_sql("SELECT DISTINCT grading_date from gradings WHERE date(grading_date) > date('now', '-1 year')") #missing: sort, time format
+
+
+    
+    @@foo ||= ""
+    @foo = @@foo
 
     respond_to do |format|
       format.html # index.html.erb
     end
+
 
   end
 
@@ -86,7 +95,25 @@ class ListsController < ApplicationController
 
       send_data output, :filename => "course.csv", :type => "application/txt"
 
+
     end
+
+  end
+
+  def exams
+
+    if params[:exam] != '' then
+      @exam_id = params[:exam]
+    else
+      @exam_id=0
+    end
+
+    exam = Grading.find(@exam_id)
+    
+    @@foo = exam.grading_date.to_s
+
+    redirect_to lists_path
+
   end
 
 end

@@ -1,11 +1,12 @@
 # encoding: utf-8
 class GradingsController < ApplicationController
+
   active_scaffold :grading do |conf|
 
-    conf.columns = [:grade, :grade_id, :grading_date, :comment, :positive, :negative]
+    conf.columns = [:grade_id, :grading_date, :grade, :comment, :positive, :negative]
     columns[:grade].label = 'Grad'
     columns[:grading_date].label = 'Prüfungsdatum'
-    columns[:grading_date].sort = false
+#    columns[:grading_date].sort = false
     columns[:comment].label = 'Kommentar'
     columns[:comment].sort = false
     columns[:comment].options = {:cols => "75", :rows => "6"}
@@ -16,30 +17,70 @@ class GradingsController < ApplicationController
     columns[:negative].sort = false
     columns[:negative].options = {:cols => "75", :rows => "6"}
 
-    conf.actions.exclude :search
-
     create.link.label = 'Neue Prüfung'
     create.label = 'Neue Prüfung'
     create.columns.exclude :grade, :grade_id
 
-    # This adds default sorting on the (hidden) column grade_id.
-    # Required because sorting on virtual column :grade does not work.
-    columns.exclude :grade_id
-    list.sorting =  { :grade_id => :desc }
-    # This adds sort capability to virtual column, but we don't need this.
-#    columns[:grade].sort_by :sql => 'gradings.grade_id'
+    columns.exclude :grade_id, :grading_date
+    list.sorting =  { :grading_date => :desc }
 
     list.label = "Prüfungen"
 
+    action_links.add 'print', :action => "print", 
+      :label => "Urkunde", :type => :member, :page => true
+
+
     update.link.label = 'Ändern'
     update.label = 'Ändern'
-    
+   
     show.link.label = 'Details'
     show.label = 'Details'
 
     delete.link.label = 'Löschen'
 
   end
+
+  # only available in main form
+  def search_ignore?(record = nil)
+    nested?
+  end
+
+  # only available in subform
+  def delete_ignore?(record = nil)
+    !nested?
+  end
+
+  def update_ignore?(record = nil)
+    !nested?
+  end
+  
+  def show_ignore?(record = nil)
+    !nested?
+  end
+
+  def create_ignore?
+    !nested?
+  end
+
+
+  def print
+    # need to retrieve array (with :all) otherwise to_pdf method doesn't work
+    grading = Grading.find(:first, :conditions => ["id = ?", params[:id]])
+    person = Person.find(:first, :conditions => ["id = ?", grading.person_id.to_s])
+    grade = Grade.find(:first, :conditions => ["id = ?", grading.grade_id.to_s])
+
+    # gsub strips comma from name
+    #filename = "Rechnung " + records[0].name.gsub(/\,/,"") + ".pdf"
+    filename = "Urkunde"
+
+    output = UrkundeReport.new.to_pdf(person.lastname, person.firstname, grading.grading_date, grade.name, grade.color)
+    send_data output, :filename => filename, :type => "application/pdf"
+
+  end
+
+
+
+
 
   def before_create_save(record)
     # Get new grade
