@@ -1,16 +1,13 @@
+# encoding: utf-8
 class ListsController < ApplicationController
 
   def index
     @courses = Course.where('course_end IS NOT NULL AND date(strftime("%Y", course_end)||"-01-01") >= date((strftime("%Y", "now")-1)||"-01-01")')  # all ongoing plus onetime within a year
     @trainings = Course.where('course_start IS NULL')
-#Problem is here:
-#    @exams = Grading.find_by_sql("SELECT DISTINCT grading_date from gradings WHERE date(grading_date) > date('now', '-1 year')") #missing: sort, time format
+    @exams = Grading.where(:grading_date => 12.months.ago..Time.now).uniq.pluck(:grading_date)
 
 
     
-    @@foo ||= ""
-    @foo = @@foo
-
     respond_to do |format|
       format.html # index.html.erb
     end
@@ -103,16 +100,26 @@ class ListsController < ApplicationController
   def exams
 
     if params[:exam] != '' then
-      @exam_id = params[:exam]
+      @exam_date = params[:exam]
     else
-      @exam_id=0
+      @exam_date=''
     end
 
-    exam = Grading.find(@exam_id)
+    gradings = Grading.where(:grading_date => Date.parse(@exam_date))
     
-    @@foo = exam.grading_date.to_s
+    output = "Prüfung vom " + Date.parse(@exam_date).to_s + "\n" + "\n"
 
-    redirect_to lists_path
+    gradings.each do |x|
+      person = Person.find(x.person_id) 
+      grade = Grade.find(x.grade_id)
+      row = ''
+      row += person.firstname + " " + person.lastname
+      row += " => "
+      row += grade.name + ", " + grade.color
+      output = output + row + "\n"
+    end
+
+    send_data output, :filename => "exam.txt", :type => "application/txt"
 
   end
 

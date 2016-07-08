@@ -21,7 +21,7 @@ class GradingsController < ApplicationController
     create.label = 'Neue Prüfung'
     create.columns.exclude :grade, :grade_id
 
-    columns.exclude :grade_id, :grading_date
+    columns.exclude :grade_id
     list.sorting =  { :grading_date => :desc }
 
     list.label = "Prüfungen"
