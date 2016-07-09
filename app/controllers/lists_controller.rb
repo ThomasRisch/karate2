@@ -99,15 +99,15 @@ class ListsController < ApplicationController
 
   def exams
 
-    if params[:exam] != '' then
-      @exam_date = params[:exam]
+    if !params[:exam].blank? then
+      @exam_date = params[:exam].map(&:to_date)
     else
       @exam_date=''
     end
 
-    gradings = Grading.where(:grading_date => Date.parse(@exam_date))
+    gradings = Grading.where(grading_date: @exam_date) 
     
-    output = "Prüfung vom " + Date.parse(@exam_date).to_s + "\n" + "\n"
+    output = "Prüfung vom " + @exam_date.to_sentence + "\n" + "\n"
 
     gradings.each do |x|
       person = Person.find(x.person_id) 
