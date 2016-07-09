@@ -101,20 +101,21 @@ class ListsController < ApplicationController
 
     if !params[:exam].blank? then
       @exam_date = params[:exam].map(&:to_date)
+      output = "Prüfung vom " + @exam_date.to_sentence + "\n" + "\n"
     else
       @exam_date=''
+      output = "Keine Prüfung angewählt."
     end
 
     gradings = Grading.where(grading_date: @exam_date) 
     
-    output = "Prüfung vom " + @exam_date.to_sentence + "\n" + "\n"
-
     gradings.each do |x|
       person = Person.find(x.person_id) 
       grade = Grade.find(x.grade_id)
       row = ''
-      row += person.firstname + " " + person.lastname
-      row += " => "
+      row += x.grading_date.to_s + ", "
+      row += person.lastname + ", " + person.firstname
+      row += ", "
       row += grade.name + ", " + grade.color
       output = output + row + "\n"
     end
