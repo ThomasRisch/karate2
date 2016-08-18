@@ -11,13 +11,45 @@ class MemberlistReport < Prawn::Document
     text title
     font_size 10
 
-    table_content = [["<b>Name</b>", "<b>Adresse</b>", "<b>Telefon</b>", "<b>E-Mail</b>"]]
+    table_content = [["<b>Name</b>", "<b>Telefon</b>", "<b>Grad</b>", "<b>seit</b>"]]
     people.each do |person|    
+
+
+      if person.birthday.blank? then
+        birthday = "-"
+      else
+        birthday = I18n.l(person.birthday)
+      end
+
+      current_grading = Grading.find(:last, :conditions => "person_id = " + person.id.to_s)
+      if not current_grading
+        grading_desc = '-'
+        grading_date = ""
+        graded_since = ""
+        trainings = ""
+      else
+        grade = Grade.find(current_grading.grade_id)
+        grading_desc = grade.name + " - " + grade.color
+        if current_grading.grading_date.blank? then
+          grading_date = "-"
+          graded_since = ""
+        else
+          grading_date = I18n.l(current_grading.grading_date).to_s
+          graded_since = (DateTime.now - current_grading.grading_date).to_i.to_s + " Tagen"
+        end
+        if current_grading.trainings.blank? then
+          trainings = ""
+        else
+          trainings = current_grading.trainings.to_s + " Trainings"
+        end
+      end
+
+
       row = []
-      row << person.name.to_s + "\n <em>" + person.birthday.to_s + "</em>"
-      row << person.street.to_s + "\n" + person.zipcity.to_s
+      row << person.name.to_s + "\n <em>" + birthday + "</em>"
       row << "P: " + person.phone.to_s + "\n" + "M: " + person.mobile.to_s
-      row << person.email.to_s + "\n" + person.bill_email.to_s
+      row << grading_desc + "\n <em>" + grading_date + "</em>"
+      row << trainings + "\n" + graded_since
       table_content << row
     end
 
@@ -25,4 +57,7 @@ class MemberlistReport < Prawn::Document
 
     render
   end
+
+
+
 end

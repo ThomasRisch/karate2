@@ -3,10 +3,11 @@ class GradingsController < ApplicationController
 
   active_scaffold :grading do |conf|
 
-    conf.columns = [:grade_id, :grading_date, :grade, :comment, :positive, :negative]
+    conf.columns = [:grade_id, :grade, :trainings, :grading_date, :comment, :positive, :negative]
     columns[:grade].label = 'Grad'
     columns[:grading_date].label = 'Prüfungsdatum'
 #    columns[:grading_date].sort = false
+    columns[:trainings].label = 'Trainings'
     columns[:comment].label = 'Kommentar'
     columns[:comment].sort = false
     columns[:comment].options = {:cols => "75", :rows => "6"}
@@ -25,6 +26,9 @@ class GradingsController < ApplicationController
     list.sorting =  { :grading_date => :desc }
 
     list.label = "Prüfungen"
+#    list.columns.exclude :trainings
+    columns[:trainings].inplace_edit = true
+    
 
     action_links.add 'print', :action => "print", 
       :label => "Urkunde", :type => :member, :page => true
@@ -32,7 +36,7 @@ class GradingsController < ApplicationController
 
     update.link.label = 'Ändern'
     update.label = 'Ändern'
-   
+
     show.link.label = 'Details'
     show.label = 'Details'
 

@@ -20,14 +20,35 @@ class Person < ActiveRecord::Base
     "#{self.bill_lastname} #{self.bill_firstname}"
   end
 
-  def gradex
+  def gradex_old
     current_grading = Grading.find(:last, :conditions => "person_id = " + id.to_s)
     if not current_grading
       return '-'
     else
-      return Grade.find(current_grading.grade_id).name + ' - ' + Grade.find(current_grading.grade_id).color + " (" + I18n.l(current_grading.grading_date) + ")"
+      grade = Grade.find(current_grading.grade_id)
+      if current_grading.grading_date.blank? then
+        grading_date = "-"
+      else
+        grading_date = I18n.l(current_grading.grading_date)
+      end
+      if current_grading.trainings.blank? then
+        trainings = ""
+      else
+        trainings = ", " + current_grading.trainings.to_s + " Trainings" 
+      end
+      return grade.name + ' - ' + grade.color + " seit " + grading_date + trainings
     end
   end
+
+  def gradex
+    all_grades = Grading.find(:all, :conditions => "person_id = " + id.to_s)
+    if all_grades.blank? or (all_grades.length == 0)
+      return "-"
+    else
+      return all_grades.length.to_s
+    end
+  end
+
   
   def notex
     all_notes = Note.find(:all, :conditions => "person_id = " + id.to_s)

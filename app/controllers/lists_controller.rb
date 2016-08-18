@@ -6,8 +6,6 @@ class ListsController < ApplicationController
     @trainings = Course.where('course_start IS NULL')
     @exams = Grading.where(:grading_date => 12.months.ago..Time.now).uniq.pluck(:grading_date)
 
-
-    
     respond_to do |format|
       format.html # index.html.erb
     end
@@ -111,17 +109,41 @@ class ListsController < ApplicationController
     
     gradings.each do |x|
       person = Person.find(x.person_id) 
-      grade = Grade.find(x.grade_id)
       row = ''
       row += x.grading_date.to_s + ", "
       row += person.lastname + ", " + person.firstname
-      row += ", "
-      row += grade.name + ", " + grade.color
-      output = output + row + "\n"
+
+      if params[:participants]
+        row += ", "
+        grade = Grade.find(x.grade_id)
+        row += grade.name + ", " + grade.color
+        output += row + "\n"
+
+
+      elsif params[:details]
+        output = output + row + "\n"
+
+        his_gradings = Grading.where(:person_id => x.person_id).reverse#.order("sort_order")
+        his_gradings.each do |y|
+          row = "\t"
+          grade = Grade.find(y.grade_id)
+          row += y.grading_date.to_s 
+          row += "\t" + grade.color
+          row += "\t" + y.trainings.to_s + " Trainings"
+          row += "\t" + (DateTime.now - y.grading_date).to_i.to_s + " Tage"
+          #row += "\t" + y.comment.to_s
+          #row += "\t" + y.positive.to_s
+          #row += "\t" + y.negative.to_s
+          row += "\t"
+          output += row + "\n"
+        end
+      end 
+
     end
 
     send_data output, :filename => "exam.txt", :type => "application/txt"
 
   end
+
 
 end

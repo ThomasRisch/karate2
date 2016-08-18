@@ -35,7 +35,7 @@ class PeopleController < ApplicationController
     columns[:discount].label = 'Rabatt'
     columns[:is_yearly].label = 'Jahresrechnung'
 
-    columns[:gradex].label = 'Graduierung'
+    columns[:gradex].label = 'Prfg.'
     columns[:notex].label = 'Not.'
     columns[:docx].label = 'Dok.'
     columns[:coursex].label = 'Kurse'
