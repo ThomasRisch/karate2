@@ -91,3 +91,5 @@ sudo copy -r ignored files back:
 
 Run the following command to get rid of the  ActionView::Template::Error :
 bundle exec rake assets:precompile
+
+test

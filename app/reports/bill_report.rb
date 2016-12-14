@@ -233,41 +233,41 @@ class BillReport < Prawn::Document
 
     # Adressen
     pdf.font_size 9
-    pdf.bounding_box [-10,230], :width=>150 do
+    pdf.bounding_box [-10,224], :width=>150 do
       pdf.text bank_str
     end
-    pdf.bounding_box [-10,190], :width=>150 do
+    pdf.bounding_box [-10,184], :width=>150 do
       pdf.text adr_str
     end
-    pdf.bounding_box [165,230], :width=>150 do
+    pdf.bounding_box [165,224], :width=>150 do
       pdf.text bank_str
     end
-    pdf.bounding_box [165,190], :width=>150 do
+    pdf.bounding_box [165,184], :width=>150 do
       pdf.text adr_str
     end
 
     # Betrag
     pdf.font pg_ocr
     pdf.font_size 10
-    pdf.bounding_box [58,106], :width=>80 do
+    pdf.bounding_box [58,100], :width=>80 do
       pdf.text betr_fr + "   " + betr_rp
     end
-    pdf.bounding_box [233,106], :width=>80 do
+    pdf.bounding_box [233,100], :width=>80 do
       pdf.text betr_fr + "   " + betr_rp
     end
 
     # Kontonummer
     pdf.font pg_light
     pdf.font_size 9
-    pdf.bounding_box [42,129], :width=>50 do
+    pdf.bounding_box [42,121], :width=>50 do
       pdf.text kto_str
     end
-    pdf.bounding_box [217,129], :width=>50 do
+    pdf.bounding_box [217,123], :width=>50 do
       pdf.text kto_str
     end
 
     # Kundenadressen
-    pdf.bounding_box [-10,78], :width=>140 do
+    pdf.bounding_box [-10,74], :width=>140 do
       pdf.text ident_short
       pdf.text "\n"
       pdf.text bill.bill_firstname + " " + bill.bill_lastname
@@ -286,7 +286,7 @@ class BillReport < Prawn::Document
     # Nummern
     pdf.font pg_ocr
     pdf.font_size 10
-    pdf.bounding_box [25,157], :width => (pg_right+55) do
+    pdf.bounding_box [25,151], :width => (pg_right+55) do
       pdf.text ident_friendly, :align => :right
     end
 

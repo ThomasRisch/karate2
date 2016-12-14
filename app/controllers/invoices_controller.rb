@@ -112,12 +112,14 @@ class InvoicesController < ApplicationController
         # text line 1: amount
         if p.is_yearly then # yearly bill
           if Time.now.month > 3 and Time.now.month < 11 # yearly bill issued for October to April
-            bill_array[i].text1 = "Jahresbeitrag 1. Oktober " + Time.now.year.to_s + " - 30. September " + (Time.now.year+1).to_s
+            #bill_array[i].text1 = "Jahresbeitrag 1. Oktober " + Time.now.year.to_s + " - 30. September " + (Time.now.year+1).to_s
             if not p.amount.blank?
+              bill_array[i].text1 = "Jahresbeitrag 1. Oktober " + Time.now.year.to_s + " - 30. September " + (Time.now.year+1).to_s
               bill_array[i].amount1 = monetize(p.amount)
             else
-              bill_array[i].text1 = "Error: Betrag ist leer!"
-              bill_array[i].amount1 = "0.00"
+            # Hypothese: ist leer wenn Eintrittsdatum nicht null, aber Beitrag ist leer. Kurse, keine Trainings. Lizenzmarke verrechnen.  
+              #bill_array[i].text1 = "Error: Betrag ist leer!"
+              #bill_array[i].amount1 = "0.00"
             end
           else
             #leave everything empty; yearly bills not charged between April and October
@@ -129,12 +131,13 @@ class InvoicesController < ApplicationController
             when 10..12 then "1. April - 30. September " + (Time.now.year+1).to_s
             else "Error in invoices_controller"
           end
-          bill_array[i].text1 = "Beitrag Halbjahr " + next_semester
+          #bill_array[i].text1 = "Beitrag Halbjahr " + next_semester
           if not p.amount.blank?
+            bill_array[i].text1 = "Beitrag Halbjahr " + next_semester
             bill_array[i].amount1 = monetize(p.amount)
           else
-            bill_array[i].text1 = "Error: Betrag ist leer!"
-            bill_array[i].amount1 = "0.00"
+            #bill_array[i].text1 = "Error: Betrag ist leer!"
+            #bill_array[i].amount1 = "0.00"
           end
         end
      

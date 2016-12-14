@@ -2,7 +2,8 @@ class Bill < ActiveRecord::Base
 
   belongs_to :person
 
-  validates_presence_of :firstname, :lastname, :bill_firstname, :bill_lastname, :bill_street, :bill_zipcity, :amount1, :line1, :total, :issue_date, message: 'darf nicht leer sein.'
+#  validates_presence_of :firstname, :lastname, :bill_firstname, :bill_lastname, :bill_street, :bill_zipcity, :amount1, :line1, :total, :issue_date, message: 'darf nicht leer sein.'
+  validates_presence_of :firstname, :lastname, :bill_firstname, :bill_lastname, :bill_street, :bill_zipcity, :total, :issue_date, message: 'darf nicht leer sein.'
 
 
   def to_label
