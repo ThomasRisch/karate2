@@ -41,6 +41,7 @@ gem 'jquery-rails', '~> 2.1.4'
 # gem 'debugger'
 
 # Stuff used by the Karate application
+gem 'thin'
 gem 'active_scaffold'
 gem 'prawn'
 gem 'rmagick'

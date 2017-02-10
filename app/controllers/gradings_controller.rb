@@ -26,12 +26,13 @@ class GradingsController < ApplicationController
     list.sorting =  { :grading_date => :desc }
 
     list.label = "Prüfungen"
-#    list.columns.exclude :trainings
     columns[:trainings].inplace_edit = true
     
 
     action_links.add 'print', :action => "print", 
       :label => "Urkunde", :type => :member, :page => true
+    action_links.add 'details', :action => "details",
+      :label => "Details", :type => :collection, :page => true
 
 
     update.link.label = 'Ändern'
@@ -82,7 +83,13 @@ class GradingsController < ApplicationController
 
   end
 
+  def details
 
+      p = params[:person_id]
+      output = GradingReport.new.to_pdf(p)
+      send_data output, :filename => "Prüfungsdetails.pdf", :type => "application/pdf"
+
+  end
 
 
 

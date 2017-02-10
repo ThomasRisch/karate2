@@ -28,6 +28,9 @@ resources :gradings do
   member do
     get 'print'
   end
+  collection do
+    get 'details'
+  end
   as_routes
 end
 

@@ -68,30 +68,7 @@ class ListsController < ApplicationController
         output = output + row + "\n"
       end
 
-
-# Normal CSV
-#      # Header
-#      output = "NAME;VORNAME;BILL_NAME;BILL_VORNAME;STRASSE;ORT;GRUPPE\n"
-#
-#      # Data
-#      people = Person.find(:all, :include => :courses, :order=> "lastname ASC, firstname ASC", :conditions => "people.leave_date IS NULL AND courses.id = " + @course_id.to_s)
-#      course = Course.find(@course_id)
-#
-#      people.each do |person|
-#        row = ''
-#        row += person.lastname.to_s + ';'    # Umlaute sind problematisch.
-#        row += person.firstname.to_s + ';'
-#        row += person.bill_lastname.to_s + ';'
-#        row += person.bill_firstname.to_s + ';'
-#        row += person.street.to_s + ';'
-#        row += person.zipcity.to_s + ';'
-#        row += course.course_name.to_s.strip            # KLASSE/GRUPPE
-#        output = output + row + "\n"
-#      end
-
       send_data output.encode("windows-1252", "UTF-8"), :filename => "course.csv", :type => "application/txt"
-
-
     end
 
   end
@@ -106,43 +83,24 @@ class ListsController < ApplicationController
       output = "Keine Prüfung angewählt."
     end
 
-    gradings = Grading.where(grading_date: @exam_date) 
+    if params[:participants] 
+      gradings = Grading.where(grading_date: @exam_date) 
     
-    gradings.each do |x|
-      person = Person.find(x.person_id) 
-      row = ''
-      row += x.grading_date.to_s + ", "
-      row += person.lastname + ", " + person.firstname
+      gradings.each do |x|
+        person = Person.find(x.person_id) 
+        row = ''
+        row += x.grading_date.to_s + ", "
+        row += person.lastname + ", " + person.firstname
 
-      if params[:participants]
         row += ", "
         grade = Grade.find(x.grade_id)
         row += grade.name + ", " + grade.color
         output += row + "\n"
+      end
+      send_data output, :filename => "exam.txt", :type => "application/txt"
 
-
-      elsif params[:details]
-        output = output + row + "\n"
-
-        his_gradings = Grading.where(:person_id => x.person_id).reverse#.order("sort_order")
-        his_gradings.each do |y|
-          row = "\t"
-          grade = Grade.find(y.grade_id)
-          row += y.grading_date.to_s 
-          row += "\t" + grade.color
-          row += "\t" + y.trainings.to_s + " Trainings"
-          row += "\t" + (DateTime.now - y.grading_date).to_i.to_s + " Tage"
-          #row += "\t" + y.comment.to_s
-          #row += "\t" + y.positive.to_s
-          #row += "\t" + y.negative.to_s
-          row += "\t"
-          output += row + "\n"
-        end
-      end 
 
     end
-
-    send_data output, :filename => "exam.txt", :type => "application/txt"
 
   end
 
