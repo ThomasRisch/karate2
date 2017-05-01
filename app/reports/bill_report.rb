@@ -64,7 +64,7 @@ class BillReport < Prawn::Document
 
       # Bankverbindung
       bank_str = "UBS AG\n8903 Birmensdorf"
-      adr_str = "Olivia Derungs Risch\nKirchgasse 23\n8903 Birmensdorf"
+      adr_str = "Olivia Derungs Risch\nKirchgasse 23\n8903 Birmensdorf\nCH79 0027 6276 8283 7440N"
       kto_str = "80-2-2"
 
       # keine EZ Nummer
