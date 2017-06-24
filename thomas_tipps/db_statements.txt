@@ -1,4 +1,5 @@
 Alle Personen mit bestimmten Prüfungen:
 select lastname, firstname, gradings.grade_id, grades.color, gradings.grading_date from people inner join gradings on people.id = gradings.person_id inner join grades on grades.id = gradings.grade_id  where people.leave_date is null and gradings.grade_id = 1 order by lastname, firstname, gradings.grade_id ;
 
-
+Eine bestimmte Rechnung:
+select bill_firstname, bill_lastname from bills where nr="01029"

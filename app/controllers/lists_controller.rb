@@ -27,10 +27,9 @@ class ListsController < ApplicationController
       output = MemberlistReport.new.to_pdf(@course_id)
       send_data output, :filename => "Teilnehmerliste.pdf", :type => "application/pdf"
 
-    elsif params[:email]
-
-      output = EmailReport.new.to_pdf(@course_id)
-      send_data output, :filename => "Email.pdf", :type => "application/pdf"
+#    elsif params[:email]
+#      output = EmailReport.new.to_pdf(@course_id)
+#      send_data output, :filename => "Email.pdf", :type => "application/pdf"
 
     elsif params[:csv]
 
@@ -70,6 +69,54 @@ class ListsController < ApplicationController
 
       send_data output.encode("windows-1252", "UTF-8"), :filename => "course.csv", :type => "application/txt"
     end
+
+  end
+
+  def email
+
+    # getting all selected course id's in an array
+    courses = Array.new
+
+    if !params[:course].nil? then
+      courses += params[:course]
+    end
+    if !params[:training].nil? then
+      courses += params[:training]
+    end
+    if courses.size == 0 then
+      output = "Kein Kurs angewählt."
+    end
+
+    # getting all people with selected course id's (can't get smarter way than direct SQL)
+    people = Person.find_by_sql(["select firstname, lastname, email, bill_email, course_id from people inner join courses_people on people.id = courses_people.person_id where course_id in (?)", courses])
+
+    all_mails = ""
+    missed_mails = ""
+    people.each do |person|
+      e = ""
+      e += person.email.to_s
+
+      # bill email if no personal email
+      if e == "" then
+        e += person.bill_email.to_s
+      end
+
+      # exception if no mail at all
+      if e == "" then
+        missed_mails += person.firstname + " " + person.lastname + ", "
+      else
+        all_mails += e + ", "
+      end
+      
+    end
+
+
+    output = "Emails:\n" + all_mails.chomp(", ") + "\n"+ "\n"
+    output += "Fehlt:\n" + missed_mails.chomp(", ") + "\n"
+
+
+    send_data output.encode("windows-1252", "UTF-8"), :filename => "email.txt", :type => "application/txt"
+
 
   end
 

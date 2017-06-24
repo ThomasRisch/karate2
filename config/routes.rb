@@ -7,6 +7,7 @@ Karate2::Application.routes.draw do
 
 # direct routes
   post "lists/courses"
+  post "lists/email"
   post "lists/exams"
 #  get "bills/pay"
 #  get "bills/remind"
