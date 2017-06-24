@@ -88,7 +88,7 @@ class ListsController < ApplicationController
     end
 
     # getting all people with selected course id's (can't get smarter way than direct SQL)
-    people = Person.find_by_sql(["select firstname, lastname, email, bill_email, course_id from people inner join courses_people on people.id = courses_people.person_id where course_id in (?)", courses])
+    people = Person.find_by_sql(["select firstname, lastname, email, bill_email, course_id from people inner join courses_people on people.id = courses_people.person_id where people.leave_date is null and course_id in (?)", courses])
 
     all_mails = ""
     missed_mails = ""
