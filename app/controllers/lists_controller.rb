@@ -27,9 +27,36 @@ class ListsController < ApplicationController
       output = MemberlistReport.new.to_pdf(@course_id)
       send_data output, :filename => "Teilnehmerliste.pdf", :type => "application/pdf"
 
-#    elsif params[:email]
-#      output = EmailReport.new.to_pdf(@course_id)
-#      send_data output, :filename => "Email.pdf", :type => "application/pdf"
+    elsif params[:nextEx]
+      output = ""
+      nextGrading = ""
+
+      # Loop über alle Personen des Kurses
+      people = Person.find(:all, :include => :courses, :order=> "lastname ASC, firstname ASC", :conditions => "people.leave_date IS NULL AND courses.id = " + @course_id.to_s)
+
+      people.each do |person|
+  
+        
+        # finde Prüfungen in Zukunft
+        gradings = Grading.find(:all, :conditions => "gradings.person_id = " + person.id.to_s + " AND gradings.grading_date > '" + DateTime.now.to_s + "'")
+
+        # Loop über alle Prüfungen
+        color = ""
+        gradings.each do |grading|
+          # finde Farbe
+          grade = Grade.find(grading.grade_id)
+          color += grade.color + " / "
+        end 
+
+        if gradings.size > 0
+          output += person.firstname + " " + person.lastname + "\t" + color.chomp(" / ") + "\n"
+        end
+
+      end
+
+      output = "Kommende Prüfung: " + nextGrading.chomp(", ") + "\n\n" + output
+
+      send_data output, :filename => "Prüfungsliste.txt", :type => "application/txt"
 
     elsif params[:csv]
 
@@ -147,9 +174,28 @@ class ListsController < ApplicationController
       send_data output, :filename => "exam.txt", :type => "application/txt"
 
 
+    elsif params[:urkunde]
+      gradings = Grading.where(grading_date: @exam_date)
+
+      ur = Array.new  
+      i = 0
+      gradings.each do |x|
+        person = Person.find(x.person_id)
+        row = ''
+        row += x.grading_date.to_s + ", "
+        row += person.lastname + ", " + person.firstname
+
+        row += ", "
+        grade = Grade.find(x.grade_id)
+        row += grade.name + ", " + grade.color
+        ur[i] = {:lastname => person.lastname, :firstname => person.firstname, :date => x.grading_date, :kyu => grade.name, :color => grade.color}
+        i += 1
+      end
+      output = UrkundeReport.new.to_pdf(ur)
+      send_data output, :filename => "exam.pdf", :type => "application/pdf"
+
     end
 
   end
-
 
 end

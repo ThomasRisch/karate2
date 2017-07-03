@@ -1,14 +1,15 @@
 # encoding: utf-8
 
 class UrkundeReport < Prawn::Document
-  def to_pdf(lastname, vorname, date, kyu, color)
+#  def to_pdf(lastname, vorname, date, kyu, color)
+  def to_pdf(ur_array)
 
     pdf = Prawn::Document.new :page_size => 'A4'
+    first = true
 
-    title = "Urkunde für " + vorname + " " + lastname + " am " + date.to_s + " Gurt: " + color + ", " + kyu
-    font_size 24
-    text title
-    font_size 10
+    ur_array.each do |ur|
+
+    !first ? pdf.start_new_page : first=false
 
     # Constants on page style
     pg_left = 50
@@ -26,7 +27,7 @@ class UrkundeReport < Prawn::Document
     pdf.font_size 13
 
 
-    case color 
+    case ur[:color] 
     when "Halbgelbgurt"
       img = "kk_yellow.png"
     when "Halborangegurt"
@@ -34,7 +35,7 @@ class UrkundeReport < Prawn::Document
     when "Halbgrüngurt"
       img = "kk_green.png"
     when "Halbblaugurt"
-      img = "kk_blue"
+      img = "kk_blue.png"
     when "Halbviolett"
       img = "kk_violett.png"
     else
@@ -48,7 +49,7 @@ class UrkundeReport < Prawn::Document
     pdf.text "Urkunde", :size  => 72, :align => :center
 
     pdf.move_down 50 
-    pdf.text vorname+" " + lastname, :size => 36, :align => :center
+    pdf.text ur[:firstname] + " " + ur[:lastname], :size => 36, :align => :center
 
     pdf.move_down 75
     pdf.font pg_light
@@ -56,7 +57,7 @@ class UrkundeReport < Prawn::Document
 
     pdf.move_down 75
     pdf.font pg_bold
-    pdf.text color + ", " + kyu, :size => 36, :align => :center
+    pdf.text ur[:color] + ", " + ur[:kyu], :size => 36, :align => :center
 
     pdf.move_down 75
     pdf.font pg_light
@@ -69,7 +70,7 @@ class UrkundeReport < Prawn::Document
 
       # uses i18l API, configured to :de in environment.rb (http://guides.rubyonrails.org/i18n.html)
       # as we are in the helper here, it must be spelled out I18n.l; in controler l is sufficient.
-      pdf.text I18n.l(date, :format => :long)
+      pdf.text I18n.l(ur[:date], :format => :long)
 
       pdf.move_down 40
       pdf.text "Olivia Derungs Risch"
@@ -79,6 +80,7 @@ class UrkundeReport < Prawn::Document
 
     end
 
+    end # loop over urkunden
 
     pdf.render
   end

@@ -78,7 +78,10 @@ class GradingsController < ApplicationController
     #filename = "Rechnung " + records[0].name.gsub(/\,/,"") + ".pdf"
     filename = "Urkunde"
 
-    output = UrkundeReport.new.to_pdf(person.lastname, person.firstname, grading.grading_date, grade.name, grade.color)
+    ur = Array.new
+    ur[0] = {:lastname => person.lastname, :firstname => person.firstname, :date => grading.grading_date, :kyu => grade.name, :color => grade.color}
+    output = UrkundeReport.new.to_pdf(ur)
+
     send_data output, :filename => filename, :type => "application/pdf"
 
   end
