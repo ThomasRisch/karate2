@@ -29,7 +29,6 @@ class ListsController < ApplicationController
 
     elsif params[:nextEx]
       output = ""
-      nextGrading = ""
 
       # Loop über alle Personen des Kurses
       people = Person.find(:all, :include => :courses, :order=> "lastname ASC, firstname ASC", :conditions => "people.leave_date IS NULL AND courses.id = " + @course_id.to_s)
@@ -38,7 +37,7 @@ class ListsController < ApplicationController
   
         
         # finde Prüfungen in Zukunft
-        gradings = Grading.find(:all, :conditions => "gradings.person_id = " + person.id.to_s + " AND gradings.grading_date > '" + DateTime.now.to_s + "'")
+        gradings = Grading.where("person_id = ? AND grading_date > ?", person.id, DateTime.yesterday)
 
         # Loop über alle Prüfungen
         color = ""
@@ -54,7 +53,9 @@ class ListsController < ApplicationController
 
       end
 
-      output = "Kommende Prüfung: " + nextGrading.chomp(", ") + "\n\n" + output
+
+      course = Course.find(@course_id)
+      output = "Kommende Prüfung des Trainings " + course.course_desc + "\n\n" + output
 
       send_data output, :filename => "Prüfungsliste.txt", :type => "application/txt"
 
