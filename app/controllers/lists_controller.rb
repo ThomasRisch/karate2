@@ -87,6 +87,8 @@ class ListsController < ApplicationController
           row += "Arni AG"
         when "Uitikon"
           row += "Uitikon Waldegg"
+        when "Aesch"
+          row += "Aesch ZH"
         else
           row += person.zipcity.split(" ").last
         end
