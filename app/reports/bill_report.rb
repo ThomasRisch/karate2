@@ -45,7 +45,7 @@ class BillReport < Prawn::Document
       # für EZ-Nummer
       prefix = bill.prefix
       nr = bill.nr
-      ident = '7394638067300' + prefix + nr
+      ident = '0007394638067300' + prefix + nr
       ident = ident + mod10(ident).to_s
       ident_friendly = ident.reverse.scan(/.{1,5}/).join(' ').reverse
       ident_short = ident
