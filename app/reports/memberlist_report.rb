@@ -11,7 +11,7 @@ class MemberlistReport < Prawn::Document
     text title
     font_size 10
 
-    table_content = [["<b>Name</b>", "<b>Telefon</b>", "<b>Grad</b>", "<b>seit</b>"]]
+    table_content = [["<b>Name</b>", "<b>Telefon</b>", "<b>Grad</b>", "<b>Bemerkungen</b>"]]
     people.each do |person|    
 
 
@@ -32,16 +32,16 @@ class MemberlistReport < Prawn::Document
         grading_desc = grade.name + " - " + grade.color
         if current_grading.grading_date.blank? then
           grading_date = "-"
-          graded_since = ""
+#          graded_since = ""
         else
           grading_date = I18n.l(current_grading.grading_date).to_s
-          graded_since = (DateTime.now - current_grading.grading_date).to_i.to_s + " Tagen"
+#          graded_since = (DateTime.now - current_grading.grading_date).to_i.to_s + " Tagen"
         end
-        if current_grading.trainings.blank? then
-          trainings = ""
-        else
-          trainings = current_grading.trainings.to_s + " Trainings"
-        end
+#        if current_grading.trainings.blank? then
+#          trainings = ""
+#        else
+#          trainings = current_grading.trainings.to_s + " Trainings"
+#        end
       end
 
 
@@ -49,11 +49,12 @@ class MemberlistReport < Prawn::Document
       row << person.name.to_s + "\n <em>" + birthday + "</em>"
       row << "P: " + person.phone.to_s + "\n" + "M: " + person.mobile.to_s
       row << grading_desc + "\n <em>" + grading_date + "</em>"
-      row << trainings + "\n" + graded_since
+#      row << trainings + "\n" + graded_since
+      row << "" # Kommentar-Platzhalter
       table_content << row
     end
 
-    table(table_content, :header => true, :row_colors => ["F0F0F0", "FFFFFF"], :cell_style => { :inline_format => true })
+    table(table_content, :header => true, :row_colors => ["F0F0F0", "FFFFFF"], :cell_style => { :inline_format => true }, :column_widths => {3 => 200})
 
     render
   end
