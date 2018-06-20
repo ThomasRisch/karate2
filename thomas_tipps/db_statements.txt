@@ -3,3 +3,6 @@ select lastname, firstname, gradings.grade_id, grades.color, gradings.grading_da
 
 Eine bestimmte Rechnung:
 select bill_firstname, bill_lastname from bills where nr="01029"
+
+Alle Adressen für UBS Kids Cup:
+select lastname, firstname, street, zipcity from people where firstname || lastname in ("MengiaRisch", "AlecMüller");
