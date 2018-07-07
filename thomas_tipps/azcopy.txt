@@ -1,0 +1,23 @@
+Getting stuff from Shuttle
+thomas@Xerus:~/backup_shuttle$ rsync -ave ssh 192.168.1.123:/var/rails/karate2 .
+
+Updating AzCopy
+sudo apt-get update
+sudo apt-get install azcopy
+azcopy --version
+
+Get new SAS token, add it to azcopy_config
+
+thomas@Xerus:~/backup_shuttle$ azcopy --config-file ./azcopy_config
+
+
+thomas@Xerus:~/backup_shuttle$ cat azcopy_config 
+--source . 
+
+--destination https://kkbackupstore.file.core.windows.net/backup 
+
+--dest-sas "?sv=...undsoweiter..."
+
+--recursive 
+
+--exclude-older
