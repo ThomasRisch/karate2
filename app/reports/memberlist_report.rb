@@ -20,12 +20,17 @@ class MemberlistReport < Prawn::Document
       else
         birthday = I18n.l(person.birthday)
       end
+      if person.entry_date.blank? then
+        entry_date = "-"
+      else
+        entry_date = I18n.l(person.entry_date)
+      end
 
       current_grading = Grading.find(:last, :conditions => "person_id = " + person.id.to_s)
       if not current_grading
-        grading_desc = '-'
-        grading_date = ""
-        graded_since = ""
+        grading_desc = "Eintritt:"
+        grading_date = entry_date
+#        graded_since = ""
         trainings = ""
       else
         grade = Grade.find(current_grading.grade_id)
