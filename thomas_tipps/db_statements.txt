@@ -7,3 +7,6 @@ select bill_firstname, bill_lastname from bills where nr="01029"
 
 Alle Adressen für UBS Kids Cup:
 select lastname, firstname, street, zipcity from people where firstname || lastname in ("MengiaRisch", "AlecMüller");
+
+Alle Lizenzmarken:
+select firstname, lastname from bills where (text1 like 'Lizenzmarke 2019%') or (text2 like 'Lizenzmarke 2019%') or (text3 like 'Lizenzmarke 2019%') or (text4 like 'Lizenzmarke 2019%');
