@@ -66,7 +66,7 @@ class ListsController < ApplicationController
 # for J+S Database
 
       # Header
-      output = "NDBJS_PERS_NR;GESCHLECHT;NAME;VORNAME;GEB_DATUM;STRASSE;PLZ;ORT;LAND;NATIONALITAET;ERSTSPRACHE;KLASSE/GRUPPE\n"
+      output = "NDBJS_PERS_NR;GESCHLECHT;NAME;VORNAME;GEB_DATUM;AHV-Nr.;STRASSE;PLZ;ORT;LAND;NATIONALITAET;ERSTSPRACHE;KLASSE/GRUPPE\n"
 
       # Data
       people = Person.find(:all, :include => :courses, :order=> "lastname ASC, firstname ASC", :conditions => "people.leave_date IS NULL AND courses.id = " + @course_id.to_s)   
@@ -78,6 +78,7 @@ class ListsController < ApplicationController
         row += person.lastname.to_s + ';'    # Umlaute sind problematisch.
         row += person.firstname.to_s + ';' 
         row += person.birthday.strftime("%d.%m.%Y") + ';'
+        row += ';'           # AHV-Nr.
         row += ';'           # STRASSE
         row += person.zipcity.split(" ").first + ';'
         case person.zipcity.split(" ").last
