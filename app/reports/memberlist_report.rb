@@ -47,6 +47,11 @@ class MemberlistReport < Prawn::Document
 #        else
 #          trainings = current_grading.trainings.to_s + " Trainings"
 #        end
+	if current_grading.comment.blank? then
+	  comment = ""
+	else
+	  comment = current_grading.comment
+	end
       end
 
 
@@ -55,7 +60,7 @@ class MemberlistReport < Prawn::Document
       row << "P: " + person.phone.to_s + "\n" + "M: " + person.mobile.to_s
       row << grading_desc + "\n <em>" + grading_date + "</em>"
 #      row << trainings + "\n" + graded_since
-      row << "" # Kommentar-Platzhalter
+      row << comment # Kommentar-Platzhalter
       table_content << row
     end
 
