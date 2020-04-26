@@ -10,3 +10,41 @@ select lastname, firstname, street, zipcity from people where firstname || lastn
 
 Alle Lizenzmarken:
 select firstname, lastname from bills where (text1 like 'Lizenzmarke 2019%') or (text2 like 'Lizenzmarke 2019%') or (text3 like 'Lizenzmarke 2019%') or (text4 like 'Lizenzmarke 2019%');
+
+
+Alle aktiven Mitglieder mit Prüfungen:
+
+select a.lastname, a.firstname, a.color, a.gd from (
+    select lastname, firstname, grades.sort_order as so, grades.color as color, gradings.grading_date as gd from people 
+    inner join gradings on people.id = gradings.person_id 
+    inner join grades on grades.id = gradings.grade_id  
+    where people.leave_date is null order by lastname, firstname, grades.sort_order) a 
+    group by a.lastname, a.firstname 
+    having max(a.so) 
+    order by a.so;
+
+
+
+
+Alle aktiven Mitglieder ohne Prüfungen:
+select lastname, firstname, 'Weissgurt' as color, people.entry_date as gd from people 
+    left outer join gradings on people.id = gradings.person_id 
+    where people.leave_date is null and gradings.id is null and people.entry_date is not null 
+    order by lastname, firstname;
+
+
+Alle Mitglieder mit Prüfungen bzw. Eintrittsdatum:
+
+select a.lastname, a.firstname, a.color, a.gd, a.so from (
+    select lastname, firstname, grades.sort_order as so, grades.color as color, gradings.grading_date as gd from people 
+        inner join gradings on people.id = gradings.person_id 
+        inner join grades on grades.id = gradings.grade_id  
+        where people.leave_date is null 
+        order by lastname, firstname, grades.sort_order) a 
+    group by a.lastname, a.firstname 
+    having max(a.so) 
+union select lastname, firstname, 'Weissgurt' as color, people.entry_date as gd, 0 as so from people 
+    left outer join gradings on people.id = gradings.person_id 
+    where people.leave_date is null and gradings.id is null and people.entry_date is not null 
+    order by a.so, lastname, firstname;
+
