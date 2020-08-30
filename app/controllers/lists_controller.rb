@@ -74,8 +74,15 @@ class ListsController < ApplicationController
       people.each do |person|
         row = ''
         row += ';'           # NDBJS_PERS_NR
-        row += 'm;'          # GESCHLECHT M oder F
-        row += person.lastname.to_s + ';'    # Umlaute sind problematisch.
+        case person.gender.to_s
+        when "männlich"   
+          row += "1;"
+        when "weiblich"
+          row += "2;"
+        else
+          row += ";"
+        end
+        row += person.lastname.to_s + ';'    # Umlaute sind problematisch, werden aber vom Import interpretiert.
         row += person.firstname.to_s + ';' 
         row += person.birthday.strftime("%d.%m.%Y") + ';'
         row += ';'           # AHV-Nr.

@@ -4,7 +4,7 @@ class PeopleController < ApplicationController
 
 
     # Explicitly adds all columns we need, in specific order
-    config.columns = [:name, :firstname, :lastname, :street, :zipcity, :birthday, :entry_date, :leave_date, :email, :phone, :mobile, :birthday, :image,
+    config.columns = [:name, :firstname, :lastname, :street, :zipcity, :birthday, :entry_date, :leave_date, :email, :phone, :mobile, :birthday, :image, :gender,
                       :amount, :discount, :is_yearly, :salutation, :bill_name, :bill_firstname, :bill_lastname, :bill_streetprefix, :bill_street, :bill_zipcity, :bill_email,
                       :gradex, :notex, :docx, :coursex]
     
@@ -21,6 +21,7 @@ class PeopleController < ApplicationController
     columns[:entry_date].label = 'Eintritt'
     columns[:leave_date].label = 'Austritt'
     columns[:image].label = 'Bild'
+    columns[:gender].label = 'Geschlecht'
 
     columns[:salutation].label = 'Anrede'
     columns[:bill_name].label = 'Name, Vorname'
