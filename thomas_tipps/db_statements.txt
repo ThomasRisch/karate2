@@ -48,3 +48,6 @@ union select lastname, firstname, 'Weissgurt' as color, people.entry_date as gd,
     where people.leave_date is null and gradings.id is null and people.entry_date is not null 
     order by a.so, lastname, firstname;
 
+Kündigungen im letzten Jahr:
+select lastname, firstname, leave_date from people where (leave_date is not null) and leave_date > "2018-12-31" and leave_date < "2020-01-01";
+
