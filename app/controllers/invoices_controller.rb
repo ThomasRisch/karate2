@@ -124,6 +124,7 @@ class InvoicesController < ApplicationController
           else
             #leave everything empty; yearly bills not charged between April and October
           end
+
         else # semester bill
           next_semester = case Time.now.month
             when 1..3 then "1. April - 30. September " + Time.now.year.to_s
@@ -145,27 +146,42 @@ class InvoicesController < ApplicationController
         bill_array[i].text1 = course.course_desc
         bill_array[i].amount1 = monetize(course.course_amount)
       end
+
+      # text line 2: Corona cashback
+      # IF person was active during first lockdown
+      if p.entry_date.to_s < "2020-03-15"
+        if p.is_yearly then
+          bill_array[i].text2 = "Trainingsausfall Lockdown 2020 (Jahresrechnung)"
+          bill_array[i].amount2 = monetize(-p.amount.to_f / 6).to_s
+
+        else
+          bill_array[i].text2 = "./. 2 Mt. Trainingsausfall Lockdown 2020"
+          bill_array[i].amount2 = (-p.amount.to_f / 3).to_s
+        end
+      end
  
-      # text line 2: discount, only when there is an amount
+      # text line 3: discount, only when there is an amount
       if (not p.discount.blank?) and (p.discount > 0) and (not bill_array[i].amount1.blank?)
-        bill_array[i].text2 = "./. " + p.discount.to_i.to_s + "% Rabatt"
-        bill_array[i].amount2 = "-" + monetize(bill_array[i].amount1.to_f/100*p.discount)
+        bill_array[i].text3 = "./. " + p.discount.to_i.to_s + "% Rabatt"
+        sum = (bill_array[i].amount1.to_f + bill_array[i].amount2.to_f)/100*p.discount 
+        bill_array[i].amount3 = "-" + monetize(sum)
       end
 
-      # text line 3: license, only in winter semester and only for these that have a half or full colour belt
+      # text line 4: license, only in winter semester and only for these that have a half or full colour belt
       if (Time.now.month > 3 and Time.now.month < 10)
         grading = p.gradings.last
         if not grading.nil? and grading.grade_id > 0 
-          bill_array[i].text3 = "Lizenzmarke " + (Time.now.year.to_i + 1).to_s + " Swiss Karate Federation"
-          bill_array[i].amount3 = "60.00"
+          bill_array[i].text4 = "Lizenzmarke " + (Time.now.year.to_i + 1).to_s + " Swiss Karate Federation"
+          bill_array[i].amount4 = "60.00"
         end
       end
+
       
       # calculate bill total
-      total = bill_array[i].amount1.to_f + bill_array[i].amount2.to_f + bill_array[i].amount3.to_f
+      total = bill_array[i].amount1.to_f + bill_array[i].amount2.to_f + bill_array[i].amount3.to_f + bill_array[i].amount4.to_f
       bill_array[i].total = monetize(total)
 
-      if total > 0 then
+      if total != 0 then
         i += 1
         current_bill_nr += 1
       else
