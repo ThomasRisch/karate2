@@ -156,8 +156,9 @@ class InvoicesController < ApplicationController
           else
             disco = 1
           end 
-          bill_array[i].text2 = "Trainingsausfall Lockdown 2020 (Jahresrechnung)" + " Faktor: " + disco.to_s
-          bill_array[i].amount2 = monetize((-p.amount.to_f / 6)*disco).to_s
+
+          bill_array[i].text2 = "Trainingsausfall Lockdown 2020 (Jahresrechnung), Faktor " + disco.to_s
+          bill_array[i].amount2 = monetize(((-p.amount.to_f / 6)*disco).to_s)
 
         else
           bill_array[i].text2 = "./. 2 Mt. Trainingsausfall Lockdown 2020"
@@ -166,11 +167,11 @@ class InvoicesController < ApplicationController
       end
  
       # text line 3: discount, only when there is an amount
-      if (not p.discount.blank?) and (p.discount > 0) and (not bill_array[i].amount1.blank?)
-        bill_array[i].text3 = "./. " + p.discount.to_i.to_s + "% Rabatt"
-        sum = (bill_array[i].amount1.to_f + bill_array[i].amount2.to_f)/100*p.discount 
-        bill_array[i].amount3 = "-" + monetize(sum)
-      end
+#      if (not p.discount.blank?) and (p.discount > 0) and (not bill_array[i].amount1.blank?)
+#        bill_array[i].text3 = "./. " + p.discount.to_i.to_s + "% Rabatt"
+#        sum = (bill_array[i].amount1.to_f + bill_array[i].amount2.to_f)/100*p.discount 
+#        bill_array[i].amount3 = "-" + monetize(sum)
+#      end
 
       # text line 4: license, only in winter semester and only for these that have a half or full colour belt
       if (Time.now.month > 3 and Time.now.month < 10)
