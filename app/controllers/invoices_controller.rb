@@ -103,7 +103,7 @@ class InvoicesController < ApplicationController
       bill_array[i].salutation = p.salutation
       bill_array[i].person_id = p.id
       bill_array[i].company = "Keiko Kan"
-      bill_array[i].freetext = "Herzlichen Dank für das Vertrauen."
+      bill_array[i].freetext = "Eine schriftliche Kündigung muss bis spätestens 15. März 2021 bei uns eingetroffen sein. Andernfalls wird die Kursteilnahme automatisch verlängert."
       
       bill_array[i].issue_date = bill_date
 
@@ -151,12 +151,17 @@ class InvoicesController < ApplicationController
       # IF person was active during first lockdown
       if p.entry_date.to_s < "2020-03-15"
         if p.is_yearly then
-          bill_array[i].text2 = "Trainingsausfall Lockdown 2020 (Jahresrechnung)"
-          bill_array[i].amount2 = monetize(-p.amount.to_f / 6).to_s
+          if (not p.discount.blank?) and (p.discount > 0)
+            disco = 0.9
+          else
+            disco = 1
+          end 
+          bill_array[i].text2 = "Trainingsausfall Lockdown 2020 (Jahresrechnung)" + " Faktor: " + disco.to_s
+          bill_array[i].amount2 = monetize((-p.amount.to_f / 6)*disco).to_s
 
         else
           bill_array[i].text2 = "./. 2 Mt. Trainingsausfall Lockdown 2020"
-          bill_array[i].amount2 = (-p.amount.to_f / 3).to_s
+          bill_array[i].amount2 = monetize((-p.amount.to_f / 3).to_s)
         end
       end
  
