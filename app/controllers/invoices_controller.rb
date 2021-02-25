@@ -52,7 +52,7 @@ class InvoicesController < ApplicationController
     from = params[:from_bill_nr]
     to = params[:to_bill_nr]
 
-    bill_array = Bill.find(:all, :conditions => ["nr >= ? AND nr <= ? AND prefix = ?", from, to, "00000"])
+    bill_array = Bill.find(:all, :conditions => ["nr >= ? AND nr <= ? AND prefix = ? and total > 0", from, to, "00000"])
 
     output = BillReport.new.to_pdf(bill_array) 
     send_data output, :filename => "Alle Rechnungen.pdf", :type => "application/pdf"
