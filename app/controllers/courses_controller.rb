@@ -21,6 +21,9 @@ class CoursesController < ApplicationController
     list.label = "Kurse"
     list.per_page = 50
 
+    nested.add_link :people, :label => "Teilnehmer"
+
+
   end
 
   def create_ignore?
@@ -32,5 +35,6 @@ class CoursesController < ApplicationController
   def update_ignore?(record = nil)
     nested?
   end
+
 
 end 
